@@ -565,3 +565,128 @@ I practiced:
 ### Workflow Practiced
 
 **Build → Test → Debug → Diagnose → Fix → Verify → Document → Ship**
+---
+
+## 14. Input Normalization and Validation
+
+Improved `src/main.py` to clean user input before validating it.
+
+Previously, the program checked the input using:
+
+```python
+name = input("Enter your name: ")
+
+if name.strip():
+```
+
+This correctly rejected empty or whitespace-only input, but the cleaned value was not stored. Therefore, input such as:
+
+```text
+   Aqsa   
+```
+
+could still contain leading and trailing spaces when passed to `greet()`.
+
+### Debugging the Input
+
+Temporarily used:
+
+```python
+print(repr(name))
+```
+
+to make whitespace visible.
+
+For input containing spaces around the name, `repr()` showed:
+
+```text
+'   Aqsa   '
+```
+
+This confirmed that the original string still contained the whitespace.
+
+### Input Normalization
+
+Updated the input statement to:
+
+```python
+name = input("Enter your name: ").strip()
+```
+
+Now `.strip()` removes leading and trailing whitespace immediately and stores the cleaned value in `name`.
+
+Because `name` is already normalized, the validation can be simplified to:
+
+```python
+if name:
+```
+
+The program now follows this flow:
+
+**Raw Input → Normalize → Validate → Process**
+
+### Testing
+
+Tested a normal valid name:
+
+```text
+Enter your name: Aqsa
+Hello, Aqsa!
+```
+
+Tested a name with leading and trailing spaces:
+
+```text
+Enter your name:    Aqsa
+Hello, Aqsa!
+```
+
+The extra whitespace was removed successfully.
+
+Tested whitespace-only input:
+
+```text
+Enter your name:
+Name cannot be empty.
+```
+
+The whitespace-only value became an empty string after `.strip()` and was correctly rejected.
+
+### Regression Testing
+
+After simplifying:
+
+```python
+if name.strip():
+```
+
+to:
+
+```python
+if name:
+```
+
+I tested the valid and invalid input paths again.
+
+Both continued to work correctly.
+
+This demonstrated a basic form of regression testing: after changing or simplifying code, verify that previously working behavior still works.
+
+### Learning
+
+I practiced:
+
+* String normalization with `.strip()`
+* Difference between validation and normalization
+* Inspecting strings with `repr()`
+* Debugging hidden whitespace
+* Testing edge cases
+* Simplifying redundant code
+* Using truthiness of strings with `if name:`
+* Regression testing after a code change
+* Inspecting changes with `git diff`
+
+### Workflow Practiced
+
+**Build → Break → Debug → Improve → Test → Inspect → Document**
+

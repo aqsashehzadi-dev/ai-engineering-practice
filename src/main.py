@@ -3,9 +3,9 @@ def greet(name):
 
 
 def main():
-    name = input("Enter your name: ")
+    name = input("Enter your name: ").strip()
 
-    if name.strip():
+    if name:
         message = greet(name)
         print(message)
     else:
