@@ -689,4 +689,210 @@ I practiced:
 ### Workflow Practiced
 
 **Build → Break → Debug → Improve → Test → Inspect → Document**
+## Section 15 — Python Lists and Practical Integration
+
+### What I Learned
+
+I practiced Python lists using the interactive Python REPL and then applied them to the actual project.
+
+### List Basics
+
+Created a list:
+
+```python
+skills = ["Python", "Git", "GitHub"]
+```
+
+I learned that Python lists:
+
+* Can store multiple values.
+* Use zero-based indexing.
+* Support negative indexing.
+* Are mutable, so their contents can be changed after creation.
+
+### Indexing and Length
+
+```python
+skills[0]
+skills[-1]
+len(skills)
+```
+
+I learned:
+
+* Index `0` accesses the first item.
+* Index `-1` accesses the last item.
+* `len()` returns the number of items in a list.
+* Accessing an index that does not exist raises an `IndexError`.
+
+### Modifying Lists
+
+I practiced:
+
+```python
+skills.append("VS Code")
+skills[1] = "Git Basics"
+skills.remove("Git Basics")
+```
+
+I learned that list methods and index assignment can modify the original list.
+
+Trying to remove a value that does not exist produced:
+
+```text
+ValueError: list.remove(x): x not in list
+```
+
+I learned to avoid this by checking membership first:
+
+```python
+if "Java" in skills:
+    skills.remove("Java")
+```
+
+### Iterating Through Lists
+
+I used a `for` loop:
+
+```python
+for skill in skills:
+    print(skill)
+```
+
+I also combined loops, conditions, and f-strings:
+
+```python
+for skill in skills:
+    if skill == "Python":
+        print("Python is my main language")
+    else:
+        print(f"Also learning {skill}")
+```
+
+This helped me understand nested indentation and decision-making while processing list items.
+
+### List Slicing
+
+I practiced:
+
+```python
+skills[0:2]
+skills[:2]
+skills[1:]
+skills[-2:]
+skills[::2]
+skills[::-1]
+```
+
+I learned the general slicing pattern:
+
+```text
+[start:stop:step]
+```
+
+The start index is included and the stop index is excluded.
+
+I also learned that slicing such as `skills[::-1]` returns a new list and does not modify the original list.
+
+### Sorting
+
+I practiced:
+
+```python
+skills.sort()
+sorted(skills, reverse=True)
+```
+
+I learned:
+
+* `sort()` modifies the original list.
+* `sorted()` returns a new sorted list without changing the original list.
+
+### Removing and Returning Items
+
+I practiced:
+
+```python
+removed_skill = skills.pop()
+first_skill = skills.pop(0)
+```
+
+I learned that `pop()` removes an item and also returns the removed value.
+
+### append() vs extend()
+
+I practiced:
+
+```python
+skills.extend(["GitHub", "VS Code"])
+skills.append(["HTML", "CSS"])
+```
+
+I learned:
+
+* `extend()` adds multiple items individually.
+* `append()` adds its argument as one item.
+* Appending another list can create a nested list.
+
+### Nested Lists
+
+Example:
+
+```python
+skills = ["Python", "GitHub", "VS Code", ["HTML", "CSS"]]
+```
+
+I accessed nested values using:
+
+```python
+skills[3][0]
+skills[3][1]
+```
+
+This returned `"HTML"` and `"CSS"`.
+
+### Applying Lists to the Project
+
+I added a reusable function:
+
+```python
+def show_skills(skills):
+    for skill in skills:
+        print(skill)
+```
+
+Inside `main()`, I created and passed a list:
+
+```python
+skills = ["Python", "GitHub", "VS Code"]
+show_skills(skills)
+```
+
+This connected lists, functions, parameters, arguments, and loops in the actual program.
+
+### Testing
+
+I tested:
+
+* Normal name input.
+* Empty input.
+* Whitespace-only input.
+* Skills list output.
+
+The existing name validation continued to work after adding the new list functionality.
+
+### Development Workflow Practiced
+
+```text
+Learn → Build → Break → Debug → Improve → Test → Inspect → Document
+```
+
+Before staging the changes, I used:
+
+```bash
+git diff
+```
+
+to inspect exactly what had changed.
+
 
