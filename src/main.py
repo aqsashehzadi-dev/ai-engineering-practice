@@ -5,10 +5,16 @@ def show_skills(skills):
     for skill in skills:
         print(skill)
 
+def get_learning_profile():
+    return "Python", "AI Engineering"
+
 
 def main():
     skills = ["Python", "GitHub", "VS Code"]
     show_skills(skills)
+
+    language, field = get_learning_profile()
+    print(f"Learning: {language} | Direction: {field}")
     name = input("Enter your name: ").strip()
 
     if name:

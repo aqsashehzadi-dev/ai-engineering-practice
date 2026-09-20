@@ -895,4 +895,285 @@ git diff
 
 to inspect exactly what had changed.
 
+## Section 16 — Python Tuples, Immutability, and Unpacking
+
+### What I Learned
+
+I practiced Python tuples in the interactive Python REPL and then integrated tuple returning and unpacking into the actual project.
+
+### Creating a Tuple
+
+```python
+skills = ("Python", "GitHub", "VS Code")
+```
+
+A tuple is an ordered collection. Like lists, tuple elements can be accessed using indexes.
+
+### Indexing, Length, and Slicing
+
+```python
+skills[0]
+skills[-1]
+len(skills)
+skills[0:2]
+```
+
+I learned that:
+
+* Tuples use zero-based indexing.
+* Negative indexes can access elements from the end.
+* `len()` returns the number of elements.
+* Tuples support slicing.
+* A tuple slice returns another tuple.
+
+### Tuple Immutability
+
+I intentionally tried:
+
+```python
+skills[0] = "Java"
+```
+
+Python raised:
+
+```text
+TypeError: 'tuple' object does not support item assignment
+```
+
+This demonstrated that tuples are immutable: their elements cannot be directly replaced after creation.
+
+### Membership and Iteration
+
+I practiced membership checking:
+
+```python
+"GitHub" in skills
+```
+
+and iteration:
+
+```python
+for skill in skills:
+    print(skill)
+```
+
+Tuples support both membership operators and `for` loops.
+
+### Single-Item Tuples
+
+I learned an important syntax difference:
+
+```python
+("Python")    # string
+("Python",)   # tuple
+```
+
+A comma is required to create a single-item tuple.
+
+### Tuple Unpacking
+
+I practiced:
+
+```python
+language, platform, editor = skills
+```
+
+The tuple values were assigned to variables according to their order.
+
+I also intentionally tried to unpack three values into only two variables:
+
+```python
+first, second = skills
+```
+
+This raised:
+
+```text
+ValueError: too many values to unpack (expected 2, got 3)
+```
+
+### Starred Unpacking
+
+I used:
+
+```python
+first, *rest = skills
+```
+
+This assigned the first tuple value to `first` and collected the remaining values into `rest`.
+
+I verified that `rest` is a list:
+
+```python
+type(rest)
+```
+
+### Tuple Methods
+
+I practiced `count()`:
+
+```python
+numbers = (10, 20, 10, 30, 10)
+numbers.count(10)
+```
+
+and `index()`:
+
+```python
+numbers.index(30)
+numbers.index(10)
+```
+
+I learned that:
+
+* `count()` returns how many times a value occurs.
+* `index()` returns the index of the first occurrence.
+
+Searching for a missing value with `index()` raised a `ValueError`.
+
+I avoided this using defensive programming:
+
+```python
+if 50 in numbers:
+    print(numbers.index(50))
+```
+
+### Tuple and List Conversion
+
+I converted a tuple to a list:
+
+```python
+skills_list = list(skills)
+```
+
+Because lists are mutable, I could then modify an element:
+
+```python
+skills_list[0] = "Java"
+```
+
+The original tuple remained unchanged.
+
+I also converted the list back to a tuple:
+
+```python
+new_tuple = tuple(skills_list)
+```
+
+### Tuple Concatenation and Repetition
+
+I practiced concatenation:
+
+```python
+more_skills = skills + ("Git", "SQL")
+```
+
+This created a new tuple without modifying the original tuple.
+
+I also practiced repetition:
+
+```python
+("Python",) * 3
+```
+
+### Returning Multiple Values from a Function
+
+I created:
+
+```python
+def get_profile():
+    return "Aqsa", "Python", "AI Engineering"
+```
+
+The returned values were stored as a tuple.
+
+I also unpacked them directly:
+
+```python
+name, language, field = get_profile()
+```
+
+### Mutable Objects Inside Tuples
+
+I created a tuple containing a list:
+
+```python
+data = ("Aqsa", ["Python", "GitHub"])
+```
+
+I could modify the list inside the tuple:
+
+```python
+data[1].append("VS Code")
+```
+
+However, replacing the tuple element itself was not allowed:
+
+```python
+data[1] = ["Java"]
+```
+
+This raised a `TypeError`.
+
+I learned that a tuple is immutable, but a mutable object stored inside it can still change internally.
+
+### Nested Indexing
+
+I practiced:
+
+```python
+data[1][0]
+```
+
+The first index accessed the list inside the tuple, and the second index accessed an element inside that list.
+
+### List vs Tuple
+
+I learned the practical distinction:
+
+* Use a **list** when the collection needs to be modified.
+* Use a **tuple** when the collection represents values that should remain fixed.
+
+### Applying Tuples to the Project
+
+I added a function that returns multiple values:
+
+```python
+def get_learning_profile():
+    return "Python", "AI Engineering"
+```
+
+Inside `main()`, I unpacked the returned tuple:
+
+```python
+language, field = get_learning_profile()
+print(f"Learning: {language} | Direction: {field}")
+```
+
+### Testing
+
+I tested:
+
+* Tuple functionality in the Python REPL.
+* Normal name input after project integration.
+* Empty name input.
+* Whitespace-only name input.
+* Existing skills list output.
+* Learning profile output.
+
+All existing functionality continued to work after the tuple integration.
+
+### Development Workflow Practiced
+
+```text
+Learn → Build → Break → Debug → Improve → Test → Inspect → Document
+```
+
+Before documenting and staging the changes, I inspected the project code using:
+
+```bash
+git diff src/main.py
+```
+
+
 
