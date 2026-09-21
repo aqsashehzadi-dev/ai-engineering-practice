@@ -1174,6 +1174,587 @@ Before documenting and staging the changes, I inspected the project code using:
 ```bash
 git diff src/main.py
 ```
+## 17. Python Sets, Set Operations, and Unique Data
+
+### What I Learned
+
+A Python **set** is an unordered collection of unique elements. Sets are useful when duplicate values should be removed, membership needs to be checked, or different collections need to be compared.
+
+### Creating a Set
+
+```python
+skills = {"Python", "GitHub", "VS Code"}
+```
+
+A set may display its elements in a different order because set ordering should not be relied upon.
+
+### Set Length
+
+```python
+len(skills)
+```
+
+`len()` returns the number of unique elements in the set.
+
+### Sets Automatically Remove Duplicates
+
+```python
+numbers = {10, 20, 10, 30, 20}
+```
+
+Result:
+
+```python
+{10, 20, 30}
+```
+
+Duplicate values are stored only once.
+
+### Membership Checking
+
+```python
+20 in numbers
+50 in numbers
+```
+
+Results:
+
+```text
+True
+False
+```
+
+The `in` operator checks whether an element exists in a set.
+
+### Adding Elements
+
+A single element can be added using `add()`:
+
+```python
+skills.add("Git")
+```
+
+Adding an element that already exists does not create a duplicate.
+
+Multiple elements can be added using `update()`:
+
+```python
+skills.update(["Git", "SQL"])
+```
+
+### Removing Elements with `remove()`
+
+```python
+skills.remove("Git")
+```
+
+If the requested element does not exist:
+
+```python
+skills.remove("Java")
+```
+
+Python raises:
+
+```text
+KeyError: 'Java'
+```
+
+### Safe Removal with `discard()`
+
+```python
+skills.discard("Java")
+```
+
+Unlike `remove()`, `discard()` does not raise an error when the element does not exist.
+
+### Set Union
+
+```python
+backend_skills = {"Python", "SQL", "Git"}
+ai_skills = {"Python", "Machine Learning", "SQL"}
+
+backend_skills | ai_skills
+```
+
+Union contains all unique elements from both sets.
+
+Method form:
+
+```python
+backend_skills.union(ai_skills)
+```
+
+### Set Intersection
+
+```python
+backend_skills & ai_skills
+```
+
+Result contains elements that exist in both sets:
+
+```python
+{"Python", "SQL"}
+```
+
+Method form:
+
+```python
+backend_skills.intersection(ai_skills)
+```
+
+### Set Difference
+
+```python
+backend_skills - ai_skills
+```
+
+This returns elements that exist in `backend_skills` but not in `ai_skills`.
+
+Reverse difference:
+
+```python
+ai_skills - backend_skills
+```
+
+Difference is direction-dependent.
+
+### Symmetric Difference
+
+```python
+backend_skills ^ ai_skills
+```
+
+This returns elements that exist in either set but are not common to both.
+
+### Subsets and Supersets
+
+```python
+core_skills = {"Python", "SQL"}
+
+core_skills.issubset(backend_skills)
+backend_skills.issuperset(core_skills)
+```
+
+A subset contains only elements that are also present in the other set.
+
+A superset contains all elements of the smaller set.
+
+### Proper Subsets
+
+```python
+{"Python", "SQL"} < {"Python", "SQL", "Git"}
+```
+
+Result:
+
+```text
+True
+```
+
+`<` checks for a proper subset.
+
+Equal sets are not proper subsets:
+
+```python
+{"Python", "SQL"} < {"Python", "SQL"}
+```
+
+Result:
+
+```text
+False
+```
+
+`<=` allows equality:
+
+```python
+{"Python", "SQL"} <= {"Python", "SQL"}
+```
+
+Result:
+
+```text
+True
+```
+
+Similarly:
+
+* `>` checks for a proper superset.
+* `>=` checks for a superset and allows equality.
+
+### Iterating Through a Set
+
+```python
+for skill in skills:
+    print(skill)
+```
+
+Sets can be iterated with a `for` loop, but code should not rely on a particular iteration order.
+
+### Empty Sets
+
+This does **not** create an empty set:
+
+```python
+empty_set = {}
+```
+
+Its type is:
+
+```text
+<class 'dict'>
+```
+
+The correct way is:
+
+```python
+empty_set = set()
+```
+
+Its type is:
+
+```text
+<class 'set'>
+```
+
+### Sets Do Not Support Indexing
+
+Intentional test:
+
+```python
+skills[0]
+```
+
+Result:
+
+```text
+TypeError: 'set' object is not subscriptable
+```
+
+Sets do not provide positional indexing like lists and tuples.
+
+### Hashable Set Elements
+
+A list cannot be stored directly inside a set:
+
+```python
+test_set = {"Python", ["Git", "GitHub"]}
+```
+
+This raises a `TypeError` because a list is unhashable.
+
+A tuple containing hashable values can be used:
+
+```python
+test_set = {"Python", ("Git", "GitHub")}
+```
+
+Not every tuple is automatically hashable. If a tuple contains an unhashable object such as a list, that tuple cannot be used as a set element.
+
+### Removing Duplicates from a List
+
+```python
+languages = ["Python", "Java", "Python", "SQL", "Java"]
+
+unique_languages = set(languages)
+```
+
+The duplicate values are removed.
+
+The original list remains unchanged.
+
+The set can be converted back into a list:
+
+```python
+unique_languages_list = list(unique_languages)
+```
+
+This produces a list of unique values, but the original list order should not be assumed to be preserved through the set conversion.
+
+### `pop()` with Sets
+
+```python
+removed_skill = skills.pop()
+```
+
+`pop()` removes and returns an arbitrary element from a non-empty set. Code should not depend on which element is removed.
+
+Calling `pop()` on an empty set:
+
+```python
+temp_skills.pop()
+```
+
+raises:
+
+```text
+KeyError: 'pop from an empty set'
+```
+
+### Clearing a Set
+
+```python
+temp_skills.clear()
+```
+
+`clear()` removes all elements while the set object still exists.
+
+An empty set displays as:
+
+```python
+set()
+```
+
+### Disjoint Sets
+
+```python
+frontend_skills = {"HTML", "CSS", "JavaScript"}
+
+frontend_skills.isdisjoint(backend_skills)
+```
+
+`True` means the sets have no common elements.
+
+After adding a common element:
+
+```python
+frontend_skills.add("Python")
+```
+
+`isdisjoint()` returns `False`.
+
+### Set Comprehension
+
+A set can be created using comprehension syntax:
+
+```python
+squares = {number ** 2 for number in range(1, 6)}
+```
+
+A condition can also be included:
+
+```python
+even_squares = {
+    number ** 2
+    for number in range(1, 11)
+    if number % 2 == 0
+}
+```
+
+This creates a set containing the squares of even numbers.
+
+### `union()` vs `update()`
+
+```python
+combined_skills = backend_skills.union(ai_skills)
+```
+
+`union()` returns a new set and does not modify the original sets.
+
+In contrast:
+
+```python
+practice_skills.update(ai_skills)
+```
+
+`update()` modifies the existing set in place.
+
+### Copying Sets
+
+```python
+practice_skills = backend_skills.copy()
+```
+
+A copy can be modified independently without changing the original set.
+
+### `difference_update()`
+
+```python
+practice_backend = backend_skills.copy()
+
+practice_backend.difference_update({"SQL", "Java"})
+```
+
+`difference_update()` modifies the existing set in place by removing matching elements.
+
+Missing elements such as `"Java"` are ignored.
+
+### `intersection_update()`
+
+```python
+practice_backend = backend_skills.copy()
+
+practice_backend.intersection_update({"Python", "Java", "SQL"})
+```
+
+The existing set is modified so that only common elements remain.
+
+### `symmetric_difference_update()`
+
+```python
+practice_backend = backend_skills.copy()
+
+practice_backend.symmetric_difference_update(
+    {"Python", "Java", "SQL"}
+)
+```
+
+The existing set is modified so that only elements that are not common to both sets remain.
+
+### Set Equality
+
+Set equality is based on elements rather than display order:
+
+```python
+{"Python", "Git", "SQL"} == {"SQL", "Python", "Git"}
+```
+
+Result:
+
+```text
+True
+```
+
+### Frozen Sets
+
+A `frozenset` is an immutable version of a set:
+
+```python
+fixed_skills = frozenset({"Python", "Git", "SQL"})
+```
+
+Its type is:
+
+```text
+<class 'frozenset'>
+```
+
+Trying to modify it:
+
+```python
+fixed_skills.add("Machine Learning")
+```
+
+raises an `AttributeError` because `frozenset` does not provide `add()`.
+
+Membership checking still works:
+
+```python
+"Python" in fixed_skills
+```
+
+Non-mutating set operations also work:
+
+```python
+fixed_skills | {"Machine Learning"}
+```
+
+This returns a new `frozenset` while the original remains unchanged.
+
+Because a `frozenset` is hashable when its elements are hashable, it can itself be stored inside a set:
+
+```python
+skill_groups = {
+    fixed_skills,
+    frozenset({"HTML", "CSS"})
+}
+```
+
+### Practical List vs Set Difference
+
+A list is useful when:
+
+* order matters,
+* duplicates are allowed,
+* positional indexing is required.
+
+A set is useful when:
+
+* unique values are required,
+* duplicate removal is needed,
+* membership checking is important,
+* collections need union/intersection/difference operations.
+
+### Project Integration
+
+The existing project was extended with:
+
+```python
+def show_unique_skills(skills):
+    unique_skills = set(skills)
+    print("Unique Skills:")
+    for skill in unique_skills:
+        print(skill)
+```
+
+The skills list intentionally included duplicate values:
+
+```python
+skills = [
+    "Python",
+    "GitHub",
+    "VS Code",
+    "Python",
+    "GitHub"
+]
+```
+
+The function was called using:
+
+```python
+show_unique_skills(skills)
+```
+
+The normal list output showed duplicates, while the set-based output showed each skill only once.
+
+The order of unique skills changed between runs, reinforcing that set order should not be relied upon.
+
+### Regression Testing
+
+After integrating Sets, the program was tested with:
+
+* a valid name,
+* empty input,
+* whitespace-only input.
+
+Existing input normalization and validation continued to work correctly.
+
+### Code Inspection
+
+Before documentation and Git staging, the changes were inspected using:
+
+```bash
+git diff src/main.py
+```
+
+An accidental trailing-whitespace change was identified and removed before proceeding.
+
+### Key Takeaways
+
+* Sets store unique elements.
+* Set ordering should not be relied upon.
+* Sets do not support positional indexing.
+* `add()` adds one element.
+* `update()` adds multiple elements and mutates the set.
+* `remove()` raises `KeyError` for a missing element.
+* `discard()` safely ignores a missing element.
+* Union combines unique elements.
+* Intersection finds common elements.
+* Difference is direction-dependent.
+* Symmetric difference finds non-common elements.
+* `issubset()`, `issuperset()`, and `isdisjoint()` compare relationships between sets.
+* `copy()` allows safe independent modification.
+* `difference_update()`, `intersection_update()`, and `symmetric_difference_update()` mutate an existing set.
+* `{}` creates an empty dictionary, while `set()` creates an empty set.
+* `frozenset` provides immutable set behavior.
+* Sets are useful for deduplication and collection comparison.
+
+### Workflow Practiced
+
+Learn → Build → Break → Debug → Improve → Test → Inspect → Document
+
+This continued the project workflow of learning Python concepts through practical experimentation and then integrating them into a real repository.
 
 
 
