@@ -1756,5 +1756,809 @@ Learn → Build → Break → Debug → Improve → Test → Inspect → Documen
 
 This continued the project workflow of learning Python concepts through practical experimentation and then integrating them into a real repository.
 
+## 18. Python Dictionaries, Key-Value Data, and Practical Integration
+
+### What I Learned
+
+A Python dictionary stores data as **key-value pairs**.
+
+```python
+student = {
+    "name": "Aqsa",
+    "skill": "Python",
+    "level": "Beginner"
+}
+```
+
+Each key is used to access its corresponding value.
+
+### Accessing Dictionary Values
+
+Values can be accessed using their keys:
+
+```python
+student["name"]
+student["skill"]
+```
+
+Trying to access a missing key with square brackets raises a `KeyError`:
+
+```python
+student["age"]
+```
+
+This was intentionally tested to understand dictionary errors.
+
+### Safe Access with `get()`
+
+The `get()` method can safely access a key without raising a `KeyError`:
+
+```python
+student.get("age")
+```
+
+If the key does not exist, it returns `None`.
+
+A default value can also be supplied:
+
+```python
+student.get("age", "Not provided")
+```
+
+### Adding and Updating Key-Value Pairs
+
+A new key-value pair can be added using assignment:
+
+```python
+student["field"] = "AI Engineering"
+```
+
+An existing value can be updated using its key:
+
+```python
+student["level"] = "Intermediate"
+```
+
+### Dictionary Length
+
+`len()` returns the number of key-value pairs:
+
+```python
+len(student)
+```
+
+### Membership Testing
+
+Using `in` directly with a dictionary checks its **keys**:
+
+```python
+"name" in student
+```
+
+Values can be checked explicitly:
+
+```python
+"Aqsa" in student.values()
+```
+
+### Dictionary Views
+
+Important dictionary methods include:
+
+```python
+student.keys()
+student.values()
+student.items()
+```
+
+* `keys()` provides a view of the keys.
+* `values()` provides a view of the values.
+* `items()` provides key-value pairs as tuple-like pairs.
+
+### Iterating Through Dictionaries
+
+Iterating directly over a dictionary iterates over its keys:
+
+```python
+for key in student:
+    print(key)
+```
+
+Values can be iterated with:
+
+```python
+for value in student.values():
+    print(value)
+```
+
+Keys and values can be processed together using `items()` and tuple unpacking:
+
+```python
+for key, value in student.items():
+    print(key, ":", value)
+```
+
+### Updating with `update()`
+
+`update()` can modify existing keys and add new ones:
+
+```python
+student.update({"level": "Advanced Beginner"})
+student.update({"city": "Gujranwala", "status": "Learning"})
+```
+
+### Removing Dictionary Items
+
+`pop()` removes a specified key and returns its value:
+
+```python
+student.pop("status")
+```
+
+Trying to pop a missing key without a default raises `KeyError`.
+
+A safe default can be supplied:
+
+```python
+student.pop("age", "Not found")
+```
+
+`popitem()` removes and returns the last inserted remaining key-value pair:
+
+```python
+student.popitem()
+```
+
+A specific key can also be deleted using:
+
+```python
+del student["field"]
+```
+
+Deleting a missing key raises `KeyError`.
+
+### Empty Dictionaries
+
+An empty dictionary can be created in two ways:
+
+```python
+empty_dict = {}
+another_empty_dict = dict()
+```
+
+An important distinction is that `{}` creates an empty **dictionary**, not an empty set.
+
+### Creating Dictionaries with `dict()`
+
+A dictionary can also be created with the `dict()` constructor:
+
+```python
+profile = dict(
+    name="Aqsa",
+    skill="Python",
+    level="Beginner"
+)
+```
+
+### Duplicate Keys
+
+Dictionary keys must be unique.
+
+```python
+{"skill": "Python", "skill": "Git"}
+```
+
+When duplicate keys occur during dictionary construction, the later value replaces the earlier value.
+
+### Dictionary Keys and Hashability
+
+Dictionary keys must be **hashable**.
+
+A list cannot be used as a dictionary key:
+
+```python
+{["Python", "Git"]: "Skills"}
+```
+
+This intentionally produced a `TypeError`.
+
+A tuple containing hashable elements can be a key:
+
+```python
+{("Python", "Git"): "Skills"}
+```
+
+However, a tuple is not automatically a valid key if it contains an unhashable object.
+
+This was intentionally tested:
+
+```python
+{("Python", ["Git", "SQL"]): "Skills"}
+```
+
+It raised a `TypeError` because the tuple contained a mutable and unhashable list.
+
+A nested tuple containing hashable values works:
+
+```python
+{("Python", ("Git", "SQL")): "Skills"}
+```
+
+### Mutable Dictionary Values
+
+Although dictionary keys must be hashable, dictionary **values can be mutable**.
+
+For example, a list can be stored as a value:
+
+```python
+skills_data = {
+    "skills": ["Python", "Git", "SQL"]
+}
+```
+
+The list can also be modified through the dictionary.
+
+### Nested Dictionaries
+
+A dictionary can contain another dictionary:
+
+```python
+student_data = {
+    "name": "Aqsa",
+    "learning": {
+        "language": "Python",
+        "field": "AI Engineering"
+    }
+}
+```
+
+Nested values can be accessed using multiple keys:
+
+```python
+student_data["learning"]["language"]
+```
+
+### Safe Nested Dictionary Access
+
+Nested dictionaries can be accessed more safely using chained `get()` calls:
+
+```python
+safe_profile.get("learning", {}).get("language")
+```
+
+If the outer key does not exist, `{}` provides a safe fallback dictionary.
+
+A final default value can also be supplied:
+
+```python
+safe_profile.get("education", {}).get(
+    "degree",
+    "Not provided"
+)
+```
+
+This avoids a `KeyError` when expected nested data is missing.
+
+### Lists of Dictionaries
+
+Dictionaries can be stored inside lists:
+
+```python
+students = [
+    {"name": "Aqsa", "skill": "Python"},
+    {"name": "Ali", "skill": "Git"}
+]
+```
+
+Individual dictionary values can then be accessed using list indexing followed by dictionary key access:
+
+```python
+students[0]["name"]
+students[1]["skill"]
+```
+
+Lists of dictionaries can also be iterated:
+
+```python
+for student in students:
+    print(student["name"], "-", student["skill"])
+```
+
+### `setdefault()`
+
+`setdefault()` returns an existing value if the key already exists.
+
+If the key is missing, it adds the key with the supplied default value:
+
+```python
+profile.setdefault("field", "AI Engineering")
+```
+
+It does not overwrite an existing value:
+
+```python
+profile.setdefault("skill", "Java")
+```
+
+If `"skill"` already contains `"Python"`, it remains `"Python"`.
+
+### `dict.fromkeys()`
+
+`dict.fromkeys()` can create multiple keys with the same initial value:
+
+```python
+topics = dict.fromkeys(
+    ["Python", "Git", "SQL"],
+    "Pending"
+)
+```
+
+### Important `fromkeys()` Mutable-Value Gotcha
+
+Using a mutable object as the shared value requires care:
+
+```python
+shared_lists = dict.fromkeys(
+    ["Python", "Git"],
+    []
+)
+```
+
+Both keys reference the **same list object**.
+
+Therefore:
+
+```python
+shared_lists["Python"].append("Learning")
+```
+
+resulted in both keys showing the change:
+
+```python
+{
+    "Python": ["Learning"],
+    "Git": ["Learning"]
+}
+```
+
+When a separate mutable object is required for each key, a dictionary comprehension is safer:
+
+```python
+separate_lists = {
+    key: []
+    for key in ["Python", "Git"]
+}
+```
+
+After:
+
+```python
+separate_lists["Python"].append("Learning")
+```
+
+only the `"Python"` list changed.
+
+### Dictionary Comprehensions
+
+Dictionaries can be generated concisely with comprehensions:
+
+```python
+squares = {
+    number: number ** 2
+    for number in range(1, 6)
+}
+```
+
+Conditions can also be included:
+
+```python
+even_squares = {
+    number: number ** 2
+    for number in range(1, 11)
+    if number % 2 == 0
+}
+```
+
+### Copying Dictionaries
+
+A shallow copy can be created with:
+
+```python
+profile_copy = profile.copy()
+```
+
+Changing a top-level immutable value in the copy does not change the original dictionary.
+
+However, `copy()` is a **shallow copy**.
+
+With nested mutable objects:
+
+```python
+original = {
+    "name": "Aqsa",
+    "skills": {
+        "primary": "Python"
+    }
+}
+
+copied = original.copy()
+```
+
+Changing:
+
+```python
+copied["skills"]["primary"] = "AI Engineering"
+```
+
+also affected the nested dictionary visible through `original`, because both outer dictionaries referenced the same nested mutable object.
+
+This demonstrated the difference between copying the outer dictionary and independently copying nested mutable data.
+
+### Dictionary Merge Operator
+
+Dictionaries can be merged using `|`:
+
+```python
+combined = basic | advanced
+```
+
+This creates a new dictionary.
+
+If both dictionaries contain the same key, the value from the dictionary on the right wins:
+
+```python
+{"Python": "Beginner"} | {
+    "Python": "Intermediate"
+}
+```
+
+The `|=` operator updates a dictionary in place:
+
+```python
+basic |= {"SQL": "Learning"}
+```
+
+### Dictionary Unpacking with `**`
+
+Dictionary key-value pairs can be unpacked into another dictionary:
+
+```python
+full_profile = {
+    **base_profile,
+    "field": "AI Engineering"
+}
+```
+
+If a later key duplicates an unpacked key, the later value replaces the earlier value:
+
+```python
+updated_profile = {
+    **base_profile,
+    "skill": "Machine Learning"
+}
+```
+
+### Dictionary Equality and Insertion Order
+
+Two dictionaries with the same key-value pairs compare equal even if they were created in different insertion orders.
+
+Python dictionaries preserve **insertion order**.
+
+For example:
+
+```python
+order_test = {
+    "third": 3,
+    "first": 1,
+    "second": 2
+}
+```
+
+keeps that insertion order during normal iteration/display.
+
+Calling:
+
+```python
+sorted(order_test)
+```
+
+returns a sorted list of keys without modifying the original dictionary.
+
+### Dynamic Dictionary Views
+
+Dictionary views are dynamic.
+
+For example:
+
+```python
+profile_keys = profile.keys()
+```
+
+If another key is later added to `profile`, the existing `profile_keys` view reflects that change automatically.
+
+### Set-Like Operations on Dictionary Keys
+
+Dictionary key views support useful set-like operations.
+
+Given two dictionaries, common keys can be found with intersection:
+
+```python
+python_profile.keys() & ai_profile.keys()
+```
+
+Keys present only in the first dictionary can be found with difference:
+
+```python
+python_profile.keys() - ai_profile.keys()
+```
+
+Keys that occur in only one of the two dictionaries can be found with symmetric difference:
+
+```python
+python_profile.keys() ^ ai_profile.keys()
+```
+
+This connects dictionary key handling with previously learned set operations.
+
+### Mixed Value Types
+
+Dictionary values do not all need to have the same type.
+
+For example:
+
+```python
+developer = {
+    "name": "Aqsa",
+    "skills": ["Python", "Git"],
+    "experience": 0
+}
+```
+
+A mutable nested list can be modified directly:
+
+```python
+developer["skills"].append("SQL")
+```
+
+### Key Existence vs `get()` Returning `None`
+
+There is an important difference between checking whether a key exists and checking its value with `get()`.
+
+For example:
+
+```python
+settings = {"theme": None}
+```
+
+This returns `True`:
+
+```python
+"theme" in settings
+```
+
+but:
+
+```python
+settings.get("theme")
+```
+
+returns `None`.
+
+Therefore, `get()` returning `None` does not always mean the key is missing. The key may exist and actually contain `None`.
+
+Use:
+
+```python
+key in dictionary
+```
+
+when the goal is specifically to test key existence.
+
+### Counting with Dictionaries
+
+Dictionaries are useful for frequency counting.
+
+The pattern:
+
+```python
+counts["Python"] = counts.get("Python", 0) + 1
+```
+
+uses `get()` to return `0` when the key does not yet exist.
+
+This was applied to a list:
+
+```python
+skills_list = [
+    "Python",
+    "Git",
+    "Python",
+    "SQL",
+    "Git",
+    "Python"
+]
+
+skill_counts = {}
+
+for skill in skills_list:
+    skill_counts[skill] = skill_counts.get(
+        skill,
+        0
+    ) + 1
+```
+
+The resulting counts were:
+
+```python
+{
+    "Python": 3,
+    "Git": 2,
+    "SQL": 1
+}
+```
+
+### Creating a Dictionary with `zip()`
+
+Two related iterables can be combined into a dictionary:
+
+```python
+names = ["Python", "Git", "SQL"]
+statuses = ["Learning", "Done", "Pending"]
+
+learning_status = dict(
+    zip(names, statuses)
+)
+```
+
+If the iterables have different lengths, normal `zip()` stops when the shortest iterable is exhausted.
+
+### Reversing Keys and Values with a Comprehension
+
+A dictionary can sometimes be reversed using:
+
+```python
+reversed_status = {
+    value: key
+    for key, value in learning_status.items()
+}
+```
+
+However, this can lose information when multiple original keys have the same value.
+
+For example:
+
+```python
+{
+    "Python": "Learning",
+    "SQL": "Learning"
+}
+```
+
+cannot be safely reversed into a one-to-one dictionary because duplicate `"Learning"` keys would overwrite each other.
+
+### Clearing a Dictionary
+
+`clear()` removes all key-value pairs but keeps the dictionary variable:
+
+```python
+temp.clear()
+```
+
+The result is:
+
+```python
+{}
+```
+
+### Deleting an Entire Dictionary Variable
+
+There is a difference between clearing a dictionary and deleting the variable itself.
+
+```python
+del delete_test
+```
+
+removes the variable name completely.
+
+Trying to access it afterward raises `NameError`.
+
+Therefore:
+
+* `dictionary.clear()` → variable remains, but becomes empty.
+* `del dictionary` → variable itself is removed.
+
+### Practical Project Integration
+
+Dictionary knowledge was integrated into `src/main.py`.
+
+A reusable function was added:
+
+```python
+def show_profile(profile):
+    print("Learning Profile:")
+    for key, value in profile.items():
+        print(f"{key}: {value}")
+```
+
+Inside `main()`, a dictionary was created:
+
+```python
+profile = {
+    "language": "Python",
+    "field": "AI Engineering",
+    "status": "Learning"
+}
+```
+
+It was passed to the function:
+
+```python
+show_profile(profile)
+```
+
+This demonstrated:
+
+* Creating structured key-value data
+* Passing a dictionary to a function
+* Iterating with `items()`
+* Tuple unpacking inside dictionary iteration
+* Using dictionary data in a real project
+
+### Testing and Regression Testing
+
+The program was tested with valid input:
+
+```text
+Enter your name: Aqsa
+Hello, Aqsa!
+```
+
+The existing whitespace validation was also retested.
+
+Whitespace-only input correctly produced:
+
+```text
+Name cannot be empty.
+```
+
+This confirmed that the new dictionary functionality did not break existing project behavior.
+
+### Code Inspection and Formatting
+
+Before documenting or committing the changes, the source diff was inspected using:
+
+```bash
+git diff -- src/main.py
+```
+
+The inspection revealed formatting issues in the newly added dictionary block.
+
+The indentation and extra whitespace were corrected.
+
+VS Code's formatter was then used to apply consistent formatting, including proper spacing between top-level functions and a newline at the end of the file.
+
+The program was run again after formatting to confirm that functionality remained correct.
+
+### Key Takeaways
+
+* Dictionaries store structured data as key-value pairs.
+* Keys must be unique and hashable.
+* Values may contain mutable objects such as lists and dictionaries.
+* `get()` provides safer access when a key may be missing.
+* `items()` is useful for iterating through keys and values together.
+* Dictionaries can contain nested structures and can be stored inside lists.
+* `update()`, `pop()`, `popitem()`, `del`, and `clear()` modify dictionary contents in different ways.
+* Dictionary comprehensions provide a concise way to build dictionaries.
+* `copy()` creates a shallow copy, so nested mutable objects require special care.
+* `|`, `|=`, and `**` provide useful dictionary merging and unpacking techniques.
+* Dictionary key views support useful set-like operations.
+* `dict.fromkeys()` can unexpectedly share the same mutable object between multiple keys.
+* Dictionaries are useful for counting, structured records, configuration-style data, and many other real programs.
+* Existing functionality should always be regression-tested after integrating new features.
+
+### Workflow Practiced
+
+**Learn → Build → Break → Debug → Improve → Test → Inspect → Format → Document**
+
 
 
