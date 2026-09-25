@@ -2560,5 +2560,300 @@ The program was run again after formatting to confirm that functionality remaine
 
 **Learn → Build → Break → Debug → Improve → Test → Inspect → Format → Document**
 
+## 19. Data Structures & Problem Solving — Student Skills Analyzer
 
+### Purpose
+
+This practice combined Python lists, dictionaries, sets, and tuples to solve a practical data-analysis problem. The goal was to move beyond learning each data structure separately and use them together for storing, searching, filtering, counting, comparing, and summarizing student skill data.
+
+### Data Structure Design
+
+Student records were stored as dictionaries inside a list:
+
+```python
+students = [
+    {"name": "Aqsa", "skills": ["Python", "Git", "SQL"]},
+    {"name": "Ali", "skills": ["Git", "JavaScript", "SQL"]}
+]
+```
+
+This structure combines:
+
+* **List:** stores multiple student records.
+* **Dictionary:** represents each student using key-value data.
+* **Nested List:** stores multiple skills for each student.
+* **Set:** is later used to collect unique skills and remove duplicates automatically.
+* **Tuple:** is used to create fixed student summaries such as `("Aqsa", 3)`.
+
+Nested data can be accessed step by step. For example:
+
+```python
+students[0]["skills"][0]
+```
+
+returns:
+
+```text
+Python
+```
+
+This means: select the first student, access that student's `"skills"` list, and then access the first skill.
+### Unique Skills and Frequency Counting
+
+A set was used to collect all unique skills:
+
+```python
+unique_skills = set()
+
+for student in students:
+    unique_skills.update(student["skills"])
+```
+
+Because sets do not store duplicate values, repeated skills such as `"Git"` and `"SQL"` appear only once.
+
+A dictionary was then used to count how many students had each skill:
+
+```python
+skill_counts = {}
+
+for student in students:
+    for skill in student["skills"]:
+        skill_counts[skill] = skill_counts.get(skill, 0) + 1
+```
+
+The result was:
+
+```text
+{'Python': 1, 'Git': 2, 'SQL': 2, 'JavaScript': 1}
+```
+
+The `.get(skill, 0)` pattern safely returns the current count when the skill already exists and `0` when it does not exist. Adding `1` updates the frequency without requiring a separate check for every new key.
+### Most Common Skills and Tie Handling
+
+Before using `max()`, the program checks whether `skill_counts` contains data:
+
+```python
+if skill_counts:
+    max_count = max(skill_counts.values())
+```
+
+This prevents `max()` from being called on an empty collection.
+
+Instead of assuming that only one skill can have the highest frequency, all skills with the maximum count are collected:
+
+```python
+most_common_skills = []
+
+for skill, count in skill_counts.items():
+    if count == max_count:
+        most_common_skills.append(skill)
+```
+
+For the current student data, both `"Git"` and `"SQL"` have a count of `2`, so the result is:
+
+```text
+['Git', 'SQL']
+```
+
+This practice demonstrated an important problem-solving principle: code should correctly handle ties instead of assuming that a single maximum result always exists.
+
+### Student Summaries and Tuple Unpacking
+
+A list of tuples was created to store each student's name and number of skills:
+
+```python
+student_summaries = []
+
+for student in students:
+    student_summaries.append(
+        (student["name"], len(student["skills"]))
+    )
+```
+
+The resulting data has this form:
+
+```text
+[('Aqsa', 3), ('Ali', 3)]
+```
+
+Each tuple can then be unpacked directly inside a loop:
+
+```python
+for name, count in student_summaries:
+    print(f"{name} has {count} skills")
+```
+
+Output:
+
+```text
+Aqsa has 3 skills
+Ali has 3 skills
+```
+
+This combines lists, dictionaries, tuples, `len()`, loops, and tuple unpacking in one practical workflow.
+### Filtering Students by Skill
+
+A target skill can be used to search and filter students:
+
+```python
+target_skill = "Python"
+matching_students = []
+
+for student in students:
+    if target_skill in student["skills"]:
+        matching_students.append(student["name"])
+```
+
+For `"Python"`, the result is:
+
+```text
+['Aqsa']
+```
+
+Instead of only printing a matching student immediately, the matching names are stored in a list. This makes the result reusable later in the program.
+
+The program also handles the case where no students match:
+
+```python
+if matching_students:
+    print(f"Students with {target_skill}:", matching_students)
+else:
+    print(f"No students found with {target_skill} skill.")
+```
+
+When `"C++"` was tested and no student had that skill, the result was handled safely:
+
+```text
+No students found with C++ skill.
+```
+
+This practice combined membership testing with `in`, filtering, conditional logic, loops, dictionaries, nested lists, and result storage.
+### Edge Cases and Defensive Programming
+
+During practice, errors were intentionally triggered to understand how the program behaves with invalid or missing data.
+
+#### Empty Data with `max()`
+
+Calling `max()` on an empty collection caused:
+
+```python
+empty_counts = {}
+max(empty_counts.values())
+```
+
+Result:
+
+```text
+ValueError: max() iterable argument is empty
+```
+
+The safer approach is to check that the dictionary contains data before calling `max()`:
+
+```python
+if empty_counts:
+    max_count = max(empty_counts.values())
+```
+
+An empty case can also provide a meaningful message:
+
+```python
+if not empty_counts:
+    print("No skill data available.")
+```
+
+#### Missing Dictionary Key
+
+A student record without a `"skills"` key was tested:
+
+```python
+student_without_skills = {"name": "Sara"}
+```
+
+Direct access:
+
+```python
+student_without_skills["skills"]
+```
+
+caused:
+
+```text
+KeyError: 'skills'
+```
+
+Using `.get()` with a default empty list safely handled the missing key:
+
+```python
+student_without_skills.get("skills", [])
+```
+
+Result:
+
+```text
+[]
+```
+
+These tests demonstrated defensive programming: validate data and provide safe defaults before performing operations that may fail.
+### Project Integration and Testing
+
+The Student Skills Analyzer was integrated into `src/main.py` as a separate function:
+
+```python
+def analyze_student_skills():
+    ...
+```
+
+It is called from `main()`:
+
+```python
+def main():
+    analyze_student_skills()
+```
+
+The program was tested with the normal student data. It successfully:
+
+* collected unique skills,
+* counted skill frequencies,
+* identified multiple most-common skills when there was a tie,
+* created student summary tuples,
+* unpacked and displayed the summaries,
+* filtered students by a target skill,
+* and handled a no-match result.
+
+Regression testing was also performed on the existing name-input functionality.
+
+Valid input:
+
+```text
+Enter your name: Aqsa
+Hello, Aqsa!
+```
+
+Whitespace-only input:
+
+```text
+Enter your name:
+Name cannot be empty.
+```
+
+This confirmed that adding the Student Skills Analyzer did not break the existing program behavior.
+
+### Key Takeaways
+
+* Lists are useful for ordered collections of students and skills.
+* Dictionaries represent structured key-value records.
+* Sets efficiently remove duplicates and support unique-data analysis.
+* Tuples provide a compact structure for fixed summary values.
+* Nested loops can process data stored inside nested collections.
+* `.get()` is useful for frequency counting and safe dictionary access.
+* Membership testing with `in` supports searching and filtering.
+* Empty collections should be checked before operations such as `max()`.
+* Real problems often require several data structures to work together.
+* Edge-case and regression testing help make programs more reliable.
+
+### Workflow Practiced
+
+**Learn → Build → Break → Debug → Improve → Test → Inspect → Format → Document**
+
+The problem started with small REPL experiments, intentionally tested failure cases, improved unsafe logic, integrated the solution into the project, tested existing functionality again, inspected the Git diff, checked whitespace with `git diff --check`, and documented the learning before committing the work.
 
