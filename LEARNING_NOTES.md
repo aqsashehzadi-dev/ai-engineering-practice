@@ -2857,3 +2857,273 @@ This confirmed that adding the Student Skills Analyzer did not break the existin
 
 The problem started with small REPL experiments, intentionally tested failure cases, improved unsafe logic, integrated the solution into the project, tested existing functionality again, inspected the Git diff, checked whitespace with `git diff --check`, and documented the learning before committing the work.
 
+## 20. Data Structures & Problem Solving — Course Enrollment Analyzer
+
+### Purpose
+
+Built a Course Enrollment Analyzer to practice transforming raw enrollment records into useful grouped and summarized data structures.
+
+The exercise strengthened practical understanding of lists, dictionaries, sets, loops, dictionary methods, duplicate handling, and defensive programming.
+
+### Enrollment Data Structure
+
+Enrollment records were represented as a list of dictionaries.
+
+Each enrollment contains:
+
+* `student`
+* `course`
+* `status`
+
+Example:
+
+```python
+{"student": "Aqsa", "course": "Python", "status": "Active"}
+```
+
+This structure allows multiple enrollment records to be processed using loops.
+
+### Unique Courses
+
+A `set` was used to collect unique course names:
+
+```python
+unique_courses.add(course)
+```
+
+Sets automatically prevent duplicate values.
+
+For the test data, the unique courses were:
+
+```text
+Python
+Git
+```
+
+### Course Frequency Counting
+
+A dictionary was used to count how many enrollment records belong to each course:
+
+```python
+course_counts[course] = course_counts.get(course, 0) + 1
+```
+
+Test result:
+
+```python
+{'Python': 3, 'Git': 2}
+```
+
+Duplicate enrollment records are included in the frequency count because each record represents an enrollment entry.
+
+### Grouping Students by Status
+
+A dictionary of lists was created to group students according to enrollment status.
+
+```python
+status_groups.setdefault(status, [])
+status_groups[status].append(student)
+```
+
+Example result:
+
+```python
+{
+    'Active': ['Aqsa', 'Ali', 'Aqsa'],
+    'Completed': ['Sara', 'Aqsa']
+}
+```
+
+This demonstrated how `setdefault()` can initialize a collection for a key before adding values to it.
+
+### Grouping Students by Course
+
+Enrollment records were transformed into a course-to-students mapping:
+
+```python
+course_students.setdefault(course, [])
+course_students[course].append(student)
+```
+
+Example result:
+
+```python
+{
+    'Python': ['Aqsa', 'Sara', 'Aqsa'],
+    'Git': ['Ali', 'Aqsa']
+}
+```
+
+This demonstrated how raw records can be reorganized into a structure that answers a specific question efficiently.
+
+### Grouping Courses by Student
+
+A dictionary of sets was used to create a student-to-courses mapping:
+
+```python
+student_courses.setdefault(student, set())
+student_courses[student].add(course)
+```
+
+Example result:
+
+```python
+{
+    'Aqsa': {'Python', 'Git'},
+    'Ali': {'Git'},
+    'Sara': {'Python'}
+}
+```
+
+Using a `set` ensures that the same course is not stored more than once for a student.
+
+### Duplicate Data Handling
+
+A duplicate enrollment was intentionally added:
+
+```python
+{"student": "Aqsa", "course": "Python", "status": "Active"}
+```
+
+The enrollment list contained five records, but the student-to-courses mapping still stored `Python` only once for Aqsa.
+
+This demonstrated the difference between:
+
+* preserving individual records in a list
+* counting every enrollment record
+* storing unique values using a set
+
+### Derived Data and Recalculation
+
+The source `enrollments` list was modified after `student_courses` had already been calculated.
+
+The existing `student_courses` dictionary did not update automatically.
+
+The mapping had to be rebuilt from the updated source data.
+
+This demonstrated that derived data structures represent the source data at the time they are calculated and may need to be recalculated when the source changes.
+
+### Missing Data and Defensive Programming
+
+A test enrollment was created without a `status` key:
+
+```python
+{"student": "Ahmed", "course": "Python"}
+```
+
+Direct access:
+
+```python
+test_enrollment["status"]
+```
+
+caused a `KeyError`.
+
+Safe access was then practiced using:
+
+```python
+test_enrollment.get("status", "Unknown")
+```
+
+which returned:
+
+```text
+Unknown
+```
+
+The missing status could then safely be grouped under an `Unknown` category.
+
+This demonstrated how `.get()` with a default value can prevent crashes when optional data is missing.
+
+### Empty Data Handling
+
+An empty enrollment list was tested:
+
+```python
+empty_enrollments = []
+```
+
+The condition:
+
+```python
+if empty_enrollments:
+```
+
+evaluated to false because an empty list is falsy.
+
+The program safely displayed:
+
+```text
+No enrollment data available.
+```
+
+The final analyzer therefore uses:
+
+```python
+if not enrollments:
+    print("No enrollment data available.")
+    return
+```
+
+to stop processing when no enrollment records are available.
+
+### Project Integration
+
+The practiced logic was integrated into:
+
+```text
+src/main.py
+```
+
+inside:
+
+```python
+analyze_course_enrollments()
+```
+
+The function is called from `main()` while keeping the previous Student Skills Analyzer and existing name validation functionality intact.
+
+### Testing
+
+The integrated program was tested with a valid name:
+
+```text
+Enter your name: Aqsa
+Hello, Aqsa!
+```
+
+The Course Enrollment Analyzer correctly produced:
+
+```text
+Course Counts: {'Python': 3, 'Git': 2}
+```
+
+and grouped students by status, course, and unique courses per student.
+
+A regression test using whitespace-only name input also passed:
+
+```text
+Enter your name:
+Name cannot be empty.
+```
+
+`git diff --check` produced no output, confirming that no whitespace errors were detected.
+
+### Key Takeaways
+
+* Lists preserve individual records and duplicates.
+* Sets store unique values.
+* Dictionaries provide key-value mappings.
+* Dictionaries can contain lists or sets as values.
+* `.get()` can safely access missing dictionary keys.
+* `.setdefault()` is useful when building grouped collections.
+* Raw records can be transformed into multiple useful views.
+* Derived data may need to be recalculated when source data changes.
+* Empty input data should be handled explicitly.
+* New functionality should be tested without breaking existing behavior.
+
+### Workflow Practiced
+
+Learn → Build → Break → Debug → Improve → Test → Document
+
+This exercise strengthened the Data Structures & Problem Solving stage of the Python foundation by moving from individual data structure operations to practical grouping, transformation, validation, and analysis of structured records.

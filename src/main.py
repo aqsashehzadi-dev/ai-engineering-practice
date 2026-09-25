@@ -67,8 +67,62 @@ def analyze_student_skills():
         print(f"No students found with {target_skill} skill.")
 
 
+def analyze_course_enrollments():
+    enrollments = [
+        {"student": "Aqsa", "course": "Python", "status": "Active"},
+        {"student": "Ali", "course": "Git", "status": "Active"},
+        {"student": "Sara", "course": "Python", "status": "Completed"},
+        {"student": "Aqsa", "course": "Git", "status": "Completed"},
+        {"student": "Aqsa", "course": "Python", "status": "Active"},
+    ]
+
+    if not enrollments:
+        print("No enrollment data available.")
+        return
+
+    unique_courses = set()
+    course_counts = {}
+    status_groups = {}
+    course_students = {}
+    student_courses = {}
+
+    for enrollment in enrollments:
+        student = enrollment["student"]
+        course = enrollment["course"]
+        status = enrollment.get("status", "Unknown")
+
+        unique_courses.add(course)
+
+        course_counts[course] = course_counts.get(course, 0) + 1
+
+        status_groups.setdefault(status, [])
+        status_groups[status].append(student)
+
+        course_students.setdefault(course, [])
+        course_students[course].append(student)
+
+        student_courses.setdefault(student, set())
+        student_courses[student].add(course)
+
+    print("Unique Courses:", unique_courses)
+    print("Course Counts:", course_counts)
+
+    print("Students by Status:")
+    for status, students in status_groups.items():
+        print(f"{status}: {students}")
+
+    print("Students by Course:")
+    for course, students in course_students.items():
+        print(f"{course}: {students}")
+
+    print("Courses by Student:")
+    for student, courses in student_courses.items():
+        print(f"{student}: {courses}")
+
+
 def main():
     analyze_student_skills()
+    analyze_course_enrollments()
     skills = ["Python", "GitHub", "VS Code", "Python", "GitHub"]
     show_skills(skills)
     show_unique_skills(skills)
