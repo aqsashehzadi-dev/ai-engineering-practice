@@ -3127,3 +3127,404 @@ Name cannot be empty.
 Learn → Build → Break → Debug → Improve → Test → Document
 
 This exercise strengthened the Data Structures & Problem Solving stage of the Python foundation by moving from individual data structure operations to practical grouping, transformation, validation, and analysis of structured records.
+
+## 21. Functions — Reusable Logic, Composition & Advanced Foundations
+
+### Purpose
+
+Strengthened Python function fundamentals and practiced designing reusable, testable, and maintainable functions.
+
+The learning unit progressed from basic function behavior to composition, validation, higher-order functions, closures, decorators, recursion, and generators.
+
+### Return vs Print
+
+`print()` displays a value, while `return` sends a value back to the caller so it can be stored, reused, or passed to another function.
+
+A function that only prints normally returns `None`.
+
+### Parameters and Arguments
+
+Practiced:
+
+- positional arguments
+- keyword arguments
+- default parameters
+- `*args`
+- `**kwargs`
+- argument unpacking with `*`
+- dictionary unpacking with `**`
+- combining different parameter types
+
+### Scope
+
+Practiced:
+
+- local scope
+- global scope
+- local shadowing
+- `global`
+- `nonlocal`
+
+Unnecessary global mutation should generally be avoided in favor of functions that receive inputs and return outputs.
+
+### Multiple Return Values
+
+Functions can return multiple values as a tuple.
+
+Example:
+
+```python
+def calculate_stats(a, b):
+    total = a + b
+    difference = a - b
+    return total, difference
+```
+
+Tuple unpacking was used to receive the returned values.
+
+### Early Return
+
+Early returns were used to stop a function when further processing was unnecessary.
+
+Example:
+
+```python
+if price is None:
+    return "Course not found."
+```
+
+This keeps control flow simple and prevents invalid data from reaching later calculations.
+
+### Type Hints and Docstrings
+
+Practiced function type hints such as:
+
+```python
+def calculate_price(price: float, quantity: int) -> float:
+    return price * quantity
+```
+
+Type hints describe expected types but do not automatically enforce runtime validation.
+
+Function annotations were inspected using:
+
+```python
+calculate_price.__annotations__
+```
+
+Docstrings were also practiced and inspected using `.__doc__` and `help()`.
+
+### Positional-Only and Keyword-Only Parameters
+
+Positional-only parameters were practiced using `/`:
+
+```python
+def calculate_square(number, /):
+    return number * number
+```
+
+Keyword-only parameters were practiced using `*`:
+
+```python
+def create_course(name, *, price):
+    return name, price
+```
+
+This demonstrated how function APIs can control how arguments are supplied.
+
+### Function Composition
+
+Small functions were combined so that the output of one function became the input of another.
+
+Example flow:
+
+```text
+course name
+→ get course price
+→ calculate discount
+→ return final course fee
+```
+
+This demonstrated how larger behavior can be built from smaller reusable functions.
+
+### Pure-Style Function Design
+
+Calculation functions were designed to accept input and return output instead of unnecessarily modifying global state or only printing results.
+
+Example:
+
+```python
+def calculate_discount(price, discount_percent):
+    if discount_percent < 0 or discount_percent > 100:
+        return "Invalid discount."
+    discount_amount = price * discount_percent / 100
+    return price - discount_amount
+```
+
+This makes calculation logic easier to reuse and test.
+
+### Lambda Functions
+
+Short anonymous functions were practiced using `lambda`.
+
+Example:
+
+```python
+double = lambda number: number * 2
+```
+
+Lambda was also used with `sorted()`:
+
+```python
+sorted(students, key=lambda student: student[1])
+```
+
+Lambda functions are useful for small operations but should not unnecessarily replace clear named functions.
+
+### Functions as First-Class Objects
+
+Functions were passed to other functions as arguments.
+
+Example:
+
+```python
+def apply_operation(a, b, operation):
+    return operation(a, b)
+```
+
+The same function could perform different operations depending on the function supplied.
+
+Functions were also assigned to other variables, demonstrating that functions are objects in Python.
+
+### Nested Functions and Closures
+
+Functions were defined inside other functions.
+
+A closure was created where an inner function remembered data from its enclosing function even after the outer function had finished executing.
+
+Example:
+
+```python
+def make_greeting(name):
+    def greet():
+        return f"Hello, {name}!"
+    return greet
+```
+
+### nonlocal
+
+`nonlocal` was practiced using a counter closure.
+
+It allowed an inner function to modify a variable belonging to its enclosing function.
+
+The counter preserved its state across calls.
+
+### Higher-Order Functions
+
+A function returning another function was practiced:
+
+```python
+def make_multiplier(factor):
+    return lambda number: number * factor
+```
+
+This combined higher-order functions, lambda functions, and closure behavior.
+
+### Recursion
+
+Recursive functions were practiced using countdown and factorial examples.
+
+A base case was required to stop recursion.
+
+The initial factorial implementation failed for negative input and produced:
+
+```text
+RecursionError: maximum recursion depth exceeded
+```
+
+The function was improved by rejecting negative numbers before making another recursive call.
+
+This demonstrated the importance of designing valid termination conditions.
+
+### Decorators
+
+A basic decorator was built to wrap and extend another function.
+
+The decorator was improved to accept arbitrary arguments using:
+
+```python
+*args, **kwargs
+```
+
+`functools.wraps` was then used to preserve the original function metadata.
+
+Without `@wraps(func)`, the decorated function's `__name__` became:
+
+```text
+wrapper
+```
+
+After using `@wraps(func)`, the original function name was preserved.
+
+### Generator Functions
+
+Generator functions were practiced using `yield`.
+
+Example:
+
+```python
+def count_up_to(limit):
+    number = 1
+    while number <= limit:
+        yield number
+        number += 1
+```
+
+Important generator behavior practiced:
+
+- calling a generator function creates a generator object
+- `next()` retrieves the next yielded value
+- execution resumes after the previous `yield`
+- generator state is preserved between calls
+- exhausted generators raise `StopIteration`
+- `for` loops handle `StopIteration` automatically
+- an exhausted generator does not restart automatically
+- a fresh generator object must be created to iterate again
+
+### Return vs Yield
+
+A normal function returning a list provides the complete result at once.
+
+A generator using `yield` produces values lazily, one at a time when requested.
+
+A generator can be fully consumed into a list using:
+
+```python
+list(yield_numbers())
+```
+
+Generators can be useful when processing large sequences without constructing the complete collection in memory first.
+
+### Course Fee Practical
+
+The final practical used:
+
+```python
+courses = {
+    "Python": 5000,
+    "Git": 3000,
+    "SQL": 4000
+}
+```
+
+Course lookup was implemented with normalization:
+
+```python
+def get_course_price(course_name):
+    normalized_name = course_name.strip().lower()
+    for name, price in courses.items():
+        if name.lower() == normalized_name:
+            return price
+    return None
+```
+
+This allowed inputs such as `python`, `SQL`, and `"  SQL  "` to be matched safely against the stored course names.
+
+### Discount Validation
+
+Testing with a `120%` discount initially produced:
+
+```text
+-1000.0
+```
+
+This exposed a validation gap.
+
+Valid discount percentages were restricted to the range `0–100`.
+
+Invalid values now return:
+
+```text
+Invalid discount.
+```
+
+### Course Fee Composition
+
+The final composed function was:
+
+```python
+def calculate_course_fee(course_name, discount_percent=0):
+    price = get_course_price(course_name)
+    if price is None:
+        return "Course not found."
+    return calculate_discount(price, discount_percent)
+```
+
+This function combines course lookup, early return, default parameters, validation, and reusable calculation logic.
+
+### Project Integration
+
+The course fee functionality was integrated into:
+
+```text
+src/main.py
+```
+
+while keeping the existing Data Structures analyzers, profile functionality, skills functionality, and name validation intact.
+
+### Testing
+
+Integrated tests produced:
+
+```text
+Course Fee Tests:
+5000.0
+4000.0
+3000.0
+2700.0
+Course not found.
+Invalid discount.
+```
+
+These tests covered:
+
+- default discount
+- valid discount
+- whitespace and case normalization
+- another valid course
+- missing course
+- invalid discount
+
+A regression run confirmed that the existing project functionality continued to work.
+
+The file was also checked using:
+
+```text
+python -m py_compile src/main.py
+```
+
+No output was produced, confirming successful compilation.
+
+### Key Takeaways
+
+- Functions make logic reusable and easier to test.
+- `return` makes results reusable while `print()` only displays them.
+- Early returns simplify invalid or exceptional paths.
+- Default parameters provide convenient optional behavior.
+- `*args` and `**kwargs` support flexible function interfaces.
+- Functions can be passed, returned, stored, and assigned like other objects.
+- Closures can preserve enclosing state.
+- Decorators can extend function behavior.
+- `functools.wraps` preserves decorated function metadata.
+- Recursion requires a reliable termination condition.
+- Generators produce values lazily using `yield`.
+- Input normalization improves usability.
+- Validation should prevent invalid calculations.
+- Small functions can be composed into larger workflows.
+- Regression testing helps ensure new functionality does not break existing behavior.
+
+### Workflow Practiced
+
+Learn → Practice → Build → Break → Debug → Improve → Test → Document
+
+This Functions learning unit strengthened the transition from basic Python syntax toward reusable program design and prepared the project for the next Phase 1 area: Modules, Packages & Project Structure.

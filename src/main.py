@@ -24,6 +24,33 @@ def get_learning_profile():
     return "Python", "AI Engineering"
 
 
+courses = {
+    "Python": 5000,
+    "Git": 3000,
+    "SQL": 4000
+}
+def get_course_price(course_name):
+    normalized_name = course_name.strip().lower()
+    for name, price in courses.items():
+        if name.lower() == normalized_name:
+            return price
+    return None
+
+
+def calculate_discount(price, discount_percent):
+    if discount_percent < 0 or discount_percent > 100:
+        return "Invalid discount."
+    discount_amount = price * discount_percent / 100
+    return price - discount_amount
+
+
+def calculate_course_fee(course_name, discount_percent=0):
+    price = get_course_price(course_name)
+    if price is None:
+        return "Course not found."
+    return calculate_discount(price, discount_percent)
+
+
 def analyze_student_skills():
     students = [
         {"name": "Aqsa", "skills": ["Python", "Git", "SQL"]},
@@ -136,6 +163,13 @@ def main():
 
     language, field = get_learning_profile()
     print(f"Learning: {language} | Direction: {field}")
+    print("Course Fee Tests:")
+    print(calculate_course_fee("Python"))
+    print(calculate_course_fee("Python", 20))
+    print(calculate_course_fee("  SQL  ", 25))
+    print(calculate_course_fee("Git", 10))
+    print(calculate_course_fee("Java"))
+    print(calculate_course_fee("Python", 120))
 
     name = input("Enter your name: ").strip()
 
