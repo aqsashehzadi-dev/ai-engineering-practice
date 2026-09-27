@@ -3528,3 +3528,779 @@ No output was produced, confirming successful compilation.
 Learn → Practice → Build → Break → Debug → Improve → Test → Document
 
 This Functions learning unit strengthened the transition from basic Python syntax toward reusable program design and prepared the project for the next Phase 1 area: Modules, Packages & Project Structure.
+
+## 22. Modules, Packages & Project Structure
+
+### Overview
+
+This learning unit focused on organizing Python code into reusable modules and packages, understanding how Python imports work, and refactoring the existing project into a cleaner modular structure.
+
+The main goal was to move from writing most functionality inside a single `main.py` file toward separating responsibilities across dedicated modules.
+
+---
+
+### Python Modules
+
+A Python module is a `.py` file containing Python code that can be imported and reused in other files.
+
+Built-in modules were explored using the `math` module:
+
+```python
+import math
+
+print(math.sqrt(25))
+print(math.pi)
+```
+
+Different import styles were practiced:
+
+```python
+import math
+from math import sqrt
+from math import ceil, floor
+import math as m
+```
+
+The `dir()` function was used to inspect the names available inside a module:
+
+```python
+dir(math)
+```
+
+---
+
+### Important Module Attributes
+
+Several special module attributes were explored.
+
+#### `__name__`
+
+```python
+print(__name__)
+```
+
+When a Python file is executed as the main program, `__main__` is assigned to `__name__`.
+
+This makes the following pattern useful:
+
+```python
+if __name__ == "__main__":
+    main()
+```
+
+It ensures that `main()` runs when the module is executed directly but does not automatically run when the module is imported.
+
+#### `__doc__`
+
+The `__doc__` attribute provides the module's documentation string.
+
+A custom module docstring was also added:
+
+```python
+"""Utility functions for basic calculations."""
+```
+
+#### `__file__`
+
+The `__file__` attribute identifies the physical file from which a module was loaded.
+
+```python
+import src.calculator as calc
+print(calc.__file__)
+```
+
+#### `__package__`
+
+The `__package__` attribute identifies the package to which a module belongs.
+
+```python
+import src.utils.formatter as fmt
+print(fmt.__package__)
+```
+
+Output:
+
+```text
+src.utils
+```
+
+#### `__path__`
+
+Packages have a `__path__` attribute that identifies where Python searches for their submodules and subpackages.
+
+```python
+import src
+print(src.__path__)
+```
+
+A normal module such as `src.calculator` does not have a `__path__`.
+
+---
+
+### Custom Module Practice
+
+A custom module was created:
+
+```text
+src/calculator.py
+```
+
+It contained a module docstring, module-level constant, and reusable functions:
+
+```python
+"""Utility functions for basic calculations."""
+
+DEFAULT_TAX_RATE = 0.10
+
+
+def add(a, b):
+    return a + b
+
+
+def subtract(a, b):
+    return a - b
+
+
+def calculate_tax(amount):
+    return amount * DEFAULT_TAX_RATE
+
+
+if __name__ == "__main__":
+    print("Calculator module name:", __name__)
+```
+
+Different import approaches were practiced:
+
+```python
+import src.calculator
+import src.calculator as calc
+from src.calculator import add
+from src.calculator import add as addition
+```
+
+---
+
+### Avoiding `import *`
+
+Wildcard importing was tested:
+
+```python
+from src.calculator import *
+```
+
+A temporary second module containing another `add()` function demonstrated that wildcard imports can create name conflicts.
+
+Explicit imports such as:
+
+```python
+import src.calculator as calc
+```
+
+or:
+
+```python
+from src.calculator import add
+```
+
+are clearer and safer.
+
+The temporary conflict-testing module was removed after the experiment.
+
+---
+
+### Module Caching and `sys.modules`
+
+Python caches imported modules during a running Python process.
+
+```python
+import sys
+print("src.calculator" in sys.modules)
+```
+
+After:
+
+```python
+import src.calculator
+```
+
+the module becomes available in `sys.modules`.
+
+Repeated normal imports in the same Python process reuse the cached module.
+
+---
+
+### Python Import Search Path
+
+Python's module search locations were inspected using:
+
+```python
+import sys
+print(sys.path)
+```
+
+The output included Python standard-library locations, the virtual environment, and:
+
+```text
+.venv\Lib\site-packages
+```
+
+The current working directory was verified using:
+
+```python
+import os
+print(os.getcwd())
+```
+
+The project was being executed from:
+
+```text
+C:\Users\dell\Desktop\ai-engineering-practice
+```
+
+Running an import from the project root succeeded:
+
+```python
+import src.calculator
+```
+
+Running the same import after moving to the parent directory produced:
+
+```text
+ModuleNotFoundError: No module named 'src'
+```
+
+This demonstrated the relationship between the working directory, `sys.path`, and local imports.
+
+---
+
+### Packages
+
+A package is used to organize related Python modules.
+
+A new package was created:
+
+```text
+src/
+└── utils/
+    ├── __init__.py
+    └── formatter.py
+```
+
+The formatter module contained:
+
+```python
+def format_name(name):
+    return name.strip().title()
+```
+
+It was successfully imported using:
+
+```python
+from src.utils.formatter import format_name
+```
+
+and:
+
+```python
+import src.utils.formatter as fmt
+```
+
+---
+
+### `__init__.py`
+
+The `utils` directory was given an `__init__.py` file to make the package structure explicit.
+
+The following import was added:
+
+```python
+from .formatter import format_name
+```
+
+This allowed the shorter import:
+
+```python
+from src.utils import format_name
+```
+
+An empty:
+
+```text
+src/__init__.py
+```
+
+was also created so that `src` was explicitly represented as a regular Python package.
+
+Modern Python can also support namespace packages without `__init__.py`, but explicit `__init__.py` files were used here for a clear package structure.
+
+---
+
+### `__all__`
+
+The `utils` package defined:
+
+```python
+__all__ = ["format_name"]
+```
+
+This provides an explicit list of names intended to be exported when wildcard importing is used:
+
+```python
+from src.utils import *
+```
+
+`__all__` mainly controls wildcard exports; it does not make other package attributes completely inaccessible.
+
+---
+
+### Absolute and Relative Imports
+
+An absolute import specifies the package path explicitly:
+
+```python
+from src.utils.formatter import format_name
+```
+
+A relative import uses dots to navigate within a package:
+
+```python
+from .formatter import format_name
+```
+
+Here:
+
+```text
+.  = current package
+.. = parent package
+```
+
+A temporary relative import was tested:
+
+```python
+from ..calculator import add
+```
+
+It successfully accessed `calculator.py` from the parent `src` package when executed in the appropriate package context.
+
+The temporary import was removed after the experiment.
+
+---
+
+### Direct Execution vs `python -m`
+
+A module can be executed using a file path:
+
+```text
+python src/calculator.py
+```
+
+or by its module name:
+
+```text
+python -m src.calculator
+```
+
+Using `-m` executes code in its module/package context.
+
+A relative import was temporarily added to `formatter.py`.
+
+Running:
+
+```text
+python src/utils/formatter.py
+```
+
+produced:
+
+```text
+ImportError: attempted relative import with no known parent package
+```
+
+Running through the module path:
+
+```text
+python -m src.utils.formatter
+```
+
+provided the required package context for resolving the relative import.
+
+A runtime warning was also observed because `src.utils.__init__.py` imported `formatter` before `runpy` attempted to execute the same module.
+
+This demonstrated that imports placed in `__init__.py` can cause modules to be loaded during package initialization.
+
+---
+
+### `ModuleNotFoundError`
+
+An intentionally missing module was imported:
+
+```python
+import module_that_does_not_exist
+```
+
+Python produced:
+
+```text
+ModuleNotFoundError: No module named 'module_that_does_not_exist'
+```
+
+Common causes include:
+
+- incorrect module names
+- missing third-party dependencies
+- incorrect project structure
+- unexpected working directory
+- modules unavailable on the Python import search path
+
+---
+
+### Circular Imports
+
+Circular imports were intentionally created using two temporary modules.
+
+Conceptually:
+
+```text
+module_a
+   ↓ imports
+module_b
+   ↓ imports
+module_a
+```
+
+This produced an error involving a:
+
+```text
+partially initialized module
+```
+
+because Python attempted to access a name before the first module had finished initializing.
+
+Shared functionality should instead be organized so modules do not depend on each other in a cycle.
+
+The temporary circular-import modules were removed after the experiment.
+
+---
+
+### Standard Library, Third-Party, and Local Imports
+
+Imports were classified into three categories.
+
+#### Standard Library
+
+```python
+import os
+import sys
+import math
+```
+
+#### Third-Party Packages
+
+Packages installed separately, normally using `pip`.
+
+The current virtual environment was checked using:
+
+```text
+pip list
+```
+
+At this stage it contained:
+
+```text
+pip 26.2.1
+```
+
+Third-party packages installed in the active virtual environment are normally available under its `site-packages` directory.
+
+#### Local Project Imports
+
+```python
+from src.utils import format_name
+from src.course_fees import calculate_course_fee
+```
+
+---
+
+### Package Discovery
+
+The standard-library `pkgutil` module was used to inspect importable items inside `src`:
+
+```python
+import pkgutil
+import src
+
+print([item.name for item in pkgutil.iter_modules(src.__path__)])
+```
+
+This demonstrated an important distinction:
+
+```text
+Discoverable does not mean already imported.
+```
+
+A module can exist inside a package without being present in `sys.modules` until it is imported.
+
+---
+
+### Separation of Concerns
+
+The original `main.py` contained multiple responsibilities, including:
+
+- program execution
+- user input
+- course-fee calculations
+- student skill analysis
+- course enrollment analysis
+- profile and skill display
+
+The project was refactored so related responsibilities could live in dedicated modules.
+
+---
+
+### Course Fee Module Refactoring
+
+A new module was created:
+
+```text
+src/course_fees.py
+```
+
+Course-related data and functions were moved into this module:
+
+```text
+courses
+get_course_price()
+calculate_discount()
+calculate_course_fee()
+```
+
+The module was independently tested before duplicate logic was removed from `main.py`.
+
+`main.py` now imports:
+
+```python
+from src.course_fees import calculate_course_fee
+```
+
+Existing tests continued to produce:
+
+```text
+5000.0
+4000.0
+3000.0
+2700.0
+Course not found.
+Invalid discount.
+```
+
+This preserved existing behavior while improving organization.
+
+---
+
+### Analytics Module Refactoring
+
+A new module was created:
+
+```text
+src/analytics.py
+```
+
+The following functions were moved from `main.py`:
+
+```text
+analyze_student_skills()
+analyze_course_enrollments()
+```
+
+Both functions were independently tested before the original definitions were removed from `main.py`.
+
+`main.py` now imports them using:
+
+```python
+from src.analytics import analyze_course_enrollments, analyze_student_skills
+```
+
+The full program was run again to confirm that the refactoring had not broken existing behavior.
+
+---
+
+### Program Entry Point
+
+The project uses:
+
+```python
+if __name__ == "__main__":
+    main()
+```
+
+This allows:
+
+```text
+python -m src.main
+```
+
+to start the application.
+
+Importing:
+
+```python
+import src.main
+```
+
+does not automatically execute `main()`.
+
+This was verified using:
+
+```text
+python -c "import src.main; print('main imported without running the program')"
+```
+
+which produced:
+
+```text
+main imported without running the program
+```
+
+without requesting user input.
+
+---
+
+### Current Project Structure
+
+After refactoring:
+
+```text
+src/
+├── __init__.py
+├── main.py
+├── analytics.py
+├── calculator.py
+├── course_fees.py
+└── utils/
+    ├── __init__.py
+    └── formatter.py
+```
+
+Responsibilities are now separated:
+
+```text
+main.py
+    → application entry point and coordination
+
+analytics.py
+    → student skill and course enrollment analysis
+
+course_fees.py
+    → course pricing and discount logic
+
+calculator.py
+    → reusable calculation/module practice
+
+utils/
+    → reusable utility package
+
+formatter.py
+    → formatting utility
+```
+
+---
+
+### Python Cache Files
+
+Running and importing modules generated:
+
+```text
+__pycache__/
+```
+
+directories containing `.pyc` bytecode files.
+
+Cached versions of some deleted temporary modules remained inside `__pycache__`.
+
+These files are automatically generated by Python and ignored by Git through `.gitignore`.
+
+They are not project source files.
+
+---
+
+### Verification and Regression Testing
+
+The refactored application was executed using:
+
+```text
+python -m src.main
+```
+
+Existing functionality continued to work, including:
+
+- student skill analysis
+- course enrollment analysis
+- skill display
+- profile display
+- course-fee calculations
+- invalid course handling
+- invalid discount handling
+- user-name input
+- greeting output
+
+The final greeting test produced:
+
+```text
+Enter your name: Aqsa
+Hello, Aqsa!
+```
+
+Individual modules were also imported successfully.
+
+A combined import verification produced:
+
+```text
+All imports successful
+```
+
+Syntax and compilation checks were performed using:
+
+```text
+python -m py_compile src/main.py src/course_fees.py
+```
+
+and:
+
+```text
+python -m compileall src
+```
+
+No compilation errors were reported.
+
+---
+
+### Key Takeaways
+
+- A module is a reusable Python `.py` file.
+- A package organizes related modules.
+- `__init__.py` can explicitly define a regular package and expose package-level names.
+- `__all__` can define names intended for wildcard exports.
+- Absolute imports specify a complete package path.
+- Relative imports use `.` and `..` to navigate package relationships.
+- `sys.path` determines where Python searches for imports.
+- The current working directory can affect local imports.
+- `sys.modules` caches imported modules.
+- `__name__` helps distinguish direct execution from importing.
+- `__file__` identifies a module's source location.
+- `__package__` identifies package context.
+- `__path__` identifies where package contents can be searched.
+- `python -m` executes a module using its package/module context.
+- Circular imports can cause partially initialized module errors.
+- Wildcard imports can create confusing name conflicts.
+- Explicit imports make dependencies easier to understand.
+- `__pycache__` contains generated Python bytecode and should not be treated as source code.
+- Separation of concerns makes projects easier to understand, test, and maintain.
+- Refactoring should preserve existing behavior.
+- New modules should be tested before duplicate working code is removed.
+- Regression testing should be performed after structural changes.
+
+### Workflow Practiced
+
+Learn → Practice → Build → Break → Debug → Improve → Refactor → Test → Document
+
+This learning unit moved the project from basic single-file organization toward a modular Python package structure and prepared the project for the next Phase 1 topic: Object-Oriented Programming (OOP).
