@@ -4304,3 +4304,53 @@ No compilation errors were reported.
 Learn → Practice → Build → Break → Debug → Improve → Refactor → Test → Document
 
 This learning unit moved the project from basic single-file organization toward a modular Python package structure and prepared the project for the next Phase 1 topic: Object-Oriented Programming (OOP).
+## Python OOP — Practical Implementation
+
+### Project: Student and Course Management
+
+Implemented three interconnected Python classes:
+
+**1. Person (Parent Class)**
+- Constructor and name validation
+- Name normalization using `strip()`
+- `introduce()` method
+
+**2. Student (Child Class)**
+- Inherits from `Person`
+- Uses `super()` for parent initialization
+- Encapsulates study hours using `@property` and `@study_hours.setter`
+- Validates numeric and non-negative study hours
+- Supports optional Course objects through composition
+- Implements `course_info()`, `__str__()`, and `__repr__()`
+
+**3. Course**
+- Validates course name and duration
+- Implements `__str__()` and `__repr__()`
+
+### OOP Concepts Practiced
+
+- Inheritance (IS-A relationship)
+- Composition (HAS-A relationship)
+- Encapsulation
+- Properties and setters
+- Constructors
+- Input validation
+- Exception handling
+- Dunder methods
+
+### Automated Unit Testing
+
+Used Python's built-in `unittest` framework.
+
+- Person: 5 tests
+- Student: 9 tests
+- Course: 9 tests
+- **Total: 23 tests passed**
+
+Command used:
+
+`python -m unittest discover -s tests -p "test_*.py" -v`
+
+### Key Learning
+
+Learned how to organize Python code into reusable classes, validate data, connect objects, and verify functionality through automated testing.
