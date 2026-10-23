@@ -90,7 +90,7 @@ Run tests from the project root:
 python -m unittest discover -s tests -p "test_*.py" -v
 ```
 
-**Latest test result:** 23 tests passed, 0 failures.
+**Latest test result:** Created 46 automated tests covering OOP classes, prompt validation, JSON configuration management, CSV storage, and application integration.
 
 ## Learning Progress
 
@@ -115,3 +115,101 @@ Through this repository, I have practiced:
 ## Future Development
 
 Continue developing Python projects, improving testing practices, and progressing toward practical AI engineering applications.
+
+## AI Prompt Processing & Configuration Manager
+
+Developed a modular Python application to practice robust error handling, file operations, configuration management, logging, and automated testing in an AI-oriented workflow.
+
+### Features
+
+- **Prompt Validation:** Validates input types, removes surrounding whitespace, and rejects empty prompts using custom exceptions.
+- **JSON Configuration Management:** Saves, loads, and validates application settings.
+- **Atomic File Writing:** Uses temporary files and `os.replace()` to reduce the risk of corrupting existing configuration files during failed writes.
+- **CSV Results Storage:** Stores processed prompts, demo responses, and execution status in CSV format.
+- **Logging:** Records successful operations and provides exception tracebacks for debugging.
+- **Automated Testing:** Includes unit tests, simulated failures, and end-to-end integration tests.
+
+### Application Workflow
+
+```text
+User Prompt
+    |
+    v
+Prompt Validation
+    |
+    v
+JSON Configuration Loading
+    |
+    v
+Local Demo Response
+    |
+    v
+CSV Results Storage
+    |
+    v
+Logging
+```
+
+**Note:** This application uses simulated responses for software engineering practice. It does not currently connect to a real AI model or external API.
+
+### New Project Files
+
+```text
+src/
+├── ai_prompt_app.py
+├── prompt_validator.py
+├── config_manager.py
+└── results_manager.py
+
+tests/
+├── test_ai_prompt_app.py
+├── test_prompt_validator.py
+├── test_config_manager.py
+└── test_results_manager.py
+
+data/
+├── ai_config.json
+└── prompt_results.csv   # Generated locally; Git-ignored
+```
+
+### Running the Application
+
+From the project root:
+
+```powershell
+python -m src.ai_prompt_app
+```
+
+Example output:
+
+```text
+INFO:src.results_manager:Prompt result saved successfully.
+INFO:__main__:Prompt processed successfully.
+Demo response from demo-model: Explain AI Engineering
+```
+
+### Testing
+
+Run the complete automated test suite:
+
+```powershell
+python -m unittest discover -s tests -v
+```
+
+**Latest verified result:** 46 tests passed, 0 failures.
+
+### Engineering Concepts Practiced
+
+- Custom exceptions and exception chaining
+- Input and configuration validation
+- JSON serialization and deserialization
+- CSV file operations
+- Atomic file replacement
+- Logging and debugging
+- Unit and integration testing
+- Failure simulation using `unittest.mock`
+- Modular Python application design
+
+### Development Methodology
+
+Learn → Build → Break → Debug → Improve → Document → Ship → Review → Share

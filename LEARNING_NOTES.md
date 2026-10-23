@@ -4354,3 +4354,86 @@ Command used:
 ### Key Learning
 
 Learned how to organize Python code into reusable classes, validate data, connect objects, and verify functionality through automated testing.
+
+## Phase 1 — Exceptions, File Handling & Project Integration
+
+**Project:** AI Prompt Processing & Configuration Manager  
+**Topics:** Exceptions & Robust Error Handling; File Handling & Data Serialization  
+**Status:** Practical integration and testing completed; GitHub push pending.
+
+### 1. Concepts Implemented
+
+- Custom exceptions: `InvalidPromptError`, `ConfigurationError`, `ResultsError`
+- Input validation using `isinstance()`, `raise`, and `strip()`
+- Exception handling and chaining with `raise ... from ...`
+- JSON serialization and deserialization
+- Configuration validation
+- CSV writing with `csv.DictWriter`
+- Safe file replacement using temporary files and `os.replace()`
+- Application logging with Python's `logging` module
+- Unit testing, mocking, and integration testing
+
+### 2. Practical Application
+
+Created a modular application that:
+
+1. Validates an input prompt.
+2. Loads and validates JSON configuration.
+3. Generates a local demonstration response.
+4. Saves the result to a CSV file.
+5. Logs successful operations and errors.
+
+The application does not currently use a real AI model or API.
+
+### 3. Debugging Experience
+
+**Issue 1 — Incorrect Test Expectation**
+
+A test expected `Hello AI!`, while the validator correctly returned `Hello AI`.
+
+**Solution:** Corrected the test expectation without unnecessarily modifying working application code.
+
+**Issue 2 — NameError in Configuration Loading**
+
+`write_json_atomically(config, path)` was accidentally placed inside `load_config()` before `config` was defined.
+
+**Solution:** Restored JSON reading with `json.load()` inside `load_config()`.
+
+**Issue 3 — Atomic Writing Test Failure**
+
+The simulated failure test expected `ConfigurationError`, but `save_config()` still used direct file writing.
+
+**Solution:** Integrated `write_json_atomically()` into `save_config()`.
+
+**Issue 4 — FileNotFoundError**
+
+The application expected `data/ai_config.json`, but the file was located in `src/data/ai_config.json`.
+
+**Solution:** Moved the configuration file to the correct root-level `data` directory.
+
+### 4. Automated Testing
+
+- Previous OOP baseline: 23 tests passed
+- Prompt validation and debugging: 29 tests passed
+- JSON configuration validation: 38 tests passed
+- Atomic writing failure simulation: 39 tests passed
+- CSV Results Manager: 44 tests passed
+- Final application integration: **46 tests passed, 0 failures**
+
+### 5. Key Learning Outcomes
+
+- Passing unit tests does not automatically guarantee successful application integration.
+- Tracebacks help identify the actual source of failures.
+- Tests themselves can contain incorrect expectations.
+- Atomic file replacement helps protect existing data from interrupted writes.
+- Temporary directories keep automated tests isolated.
+- Logging improves application observability.
+- Modular design makes code easier to maintain and test.
+
+### 6. Development Workflow
+
+Learn → Build → Break → Debug → Improve → Document → Ship → Review → Share
+
+**Completed:** Learn, Build, Break, Debug, Improve, and initial Documentation.
+
+**Pending:** GitHub commit and push, final review, and sharing progress.

@@ -11,3 +11,6 @@ __pycache__/
 
 # VS Code local settings
 .vscode/
+
+# Generated AI prompt results
+data/prompt_results.csv
