@@ -39,6 +39,28 @@ ai-engineering-practice/
 ├── README.md
 └── LEARNING_NOTES.md
 ```
+## Installation & Setup
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/aqsashehzadi-dev/ai-engineering-practice.git
+cd ai-engineering-practice
+```
+
+### 2. Create a virtual environment
+```powershell
+python -m venv .venv
+```
+
+### 3. Activate the virtual environment (Windows PowerShell)
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+### 4. Run automated tests
+```powershell
+python -m unittest discover -s tests -p "test_*.py" -v
+```
 
 ## Object-Oriented Programming
 
@@ -78,6 +100,17 @@ python -m unittest discover -s tests -p "test_*.py" -v
 - Object-oriented programming
 - Automated unit testing
 - Git and GitHub workflows
+
+## Key Learning Outcomes
+
+Through this repository, I have practiced:
+
+- Designing reusable Python classes using inheritance and composition.
+- Implementing input validation and encapsulation through properties.
+- Writing automated unit tests for valid and invalid inputs.
+- Organizing Python code into modules and packages.
+- Debugging errors and improving code reliability.
+- Documenting development progress and maintaining projects with Git and GitHub.
 
 ## Future Development
 
