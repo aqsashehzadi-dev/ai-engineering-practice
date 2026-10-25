@@ -4437,3 +4437,85 @@ Learn → Build → Break → Debug → Improve → Document → Ship → Review
 **Completed:** Learn, Build, Break, Debug, Improve, and initial Documentation.
 
 **Pending:** GitHub commit and push, final review, and sharing progress.
+
+## Phase 1 — Topic 1.7: Virtual Environments & Dependency Management
+
+**Status:** Theory and practical implementation completed; GitHub update pending.
+
+### Concepts Learned
+
+- Python virtual environments using `venv`
+- Project-specific dependency isolation
+- Package installation and management using `pip`
+- Direct and transitive dependencies
+- Dependency versioning and version conflicts
+- `requirements.txt` and environment reproducibility
+- Dependency security and auditing
+- Dependency compatibility verification
+
+### Practical Implementation
+
+**1. Verified the active virtual environment**
+
+Command:
+`python -c "import sys; print(sys.executable)"`
+
+Confirmed that Python was running from the project's `.venv` directory.
+
+**2. Inspected installed packages**
+
+Command:
+`python -m pip list`
+
+Result: Only `pip 26.2.1` was installed.
+
+**3. Checked dependency compatibility**
+
+Command:
+`python -m pip check`
+
+Result: `No broken requirements found.`
+
+**4. Created `requirements.txt`**
+
+Documented that the current application does not require external Python packages.
+
+**5. Verified the requirements installation workflow**
+
+Command:
+`python -m pip install -r requirements.txt`
+
+Result: Command completed without installation errors.
+
+**6. Executed automated tests**
+
+Command:
+`python -m unittest discover -s tests -v`
+
+Result: **46 tests passed, 0 failures.**
+
+### Debugging Experience
+
+**Issue:** A new heading in `README.md` was not rendered correctly in Markdown Preview.
+
+**Root cause:** The preceding code block was missing its closing triple backticks.
+
+**Solution:** Closed the code block and verified that the heading rendered correctly.
+
+### Key Learning Outcomes
+
+- Virtual environments help isolate project dependencies.
+- `pip` manages Python package installation.
+- `requirements.txt` records dependency requirements.
+- Standard Library modules do not need separate installation.
+- Dependency conflicts should be identified and resolved deliberately.
+- Automated testing helps detect regressions after environment changes.
+- Markdown documentation should be checked in Preview before publishing.
+
+### Development Workflow
+
+Learn → Build → Break → Debug → Improve → Document → Ship → Review → Share
+
+**Completed:** Learning, implementation, verification, debugging, and documentation.
+
+**Pending:** GitHub commit, push, and final review.

@@ -57,7 +57,14 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-### 4. Run automated tests
+### 4. Install Project Dependencies
+
+Install the dependencies listed in `requirements.txt`:
+```powershell
+python -m pip install -r requirements.txt
+```
+
+### 5. Run automated tests
 ```powershell
 python -m unittest discover -s tests -p "test_*.py" -v
 ```
