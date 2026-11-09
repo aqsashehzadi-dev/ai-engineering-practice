@@ -1,2 +1,3 @@
-# No third-party dependencies required.
-# This project currently uses the Python Standard Library.
+# AI Engineering Practice - Project Dependencies
+
+requests==2.34.2

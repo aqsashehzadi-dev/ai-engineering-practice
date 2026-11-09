@@ -4519,3 +4519,126 @@ Learn → Build → Break → Debug → Improve → Document → Ship → Review
 **Completed:** Learning, implementation, verification, debugging, and documentation.
 
 **Pending:** GitHub commit, push, and final review.
+
+---
+
+## Phase 1 — Topic 1.8: APIs & HTTP Basics
+
+### Learning Objectives
+
+Understand HTTP communication, REST APIs, JSON responses, error handling, and API integration using Python.
+
+### Core Concepts Learned
+
+- **API:** An interface that allows software applications to communicate.
+- **HTTP:** A request-response protocol used for communication between clients and servers.
+- **HTTPS:** HTTP communication protected using TLS encryption.
+- **REST:** An architectural style for designing resource-oriented APIs.
+- **Statelessness:** Each request carries the information required for the server to process it.
+- **JSON:** A common data format used to exchange structured information.
+
+### HTTP Methods
+
+| Method | Purpose |
+|---|---|
+| GET | Retrieve a resource |
+| POST | Create or submit data |
+| PUT | Replace a resource |
+| PATCH | Partially update a resource |
+| DELETE | Remove a resource |
+
+### HTTP Status Codes
+
+- `200 OK` — Request succeeded.
+- `201 Created` — Resource created successfully.
+- `400 Bad Request` — Invalid client request.
+- `401 Unauthorized` — Authentication required or invalid.
+- `403 Forbidden` — Access denied.
+- `404 Not Found` — Resource not found.
+- `429 Too Many Requests` — Rate limit exceeded.
+- `500 Internal Server Error` — Server-side failure.
+
+### Additional API Concepts
+
+Studied URL parameters, query strings, headers, Bearer token authentication, pagination, timeouts, retries, exponential backoff, and secure handling of API credentials.
+
+### Practical Implementation
+
+**Module:** `src/api_client.py`
+
+Implemented a REST API client using `requests`.
+
+Features:
+
+1. Fetch user data from JSONPlaceholder.
+2. Parse HTTP JSON responses.
+3. Validate required fields: `name` and `email`.
+4. Reject missing, invalid, and empty field values.
+5. Handle HTTP errors, timeouts, and connection failures.
+6. Separate data retrieval from validation logic.
+
+### API Testing
+
+**Test module:** `tests/test_api_client.py`
+
+Created eight automated tests using `unittest` and `unittest.mock`.
+
+Test coverage includes:
+
+- Successful HTTP GET request.
+- HTTP error handling.
+- Request timeout.
+- Connection failure.
+- Successful response validation.
+- Missing email field.
+- Invalid email field type.
+- Empty or whitespace-only email.
+
+Mocked external HTTP requests to make tests deterministic and independent of network availability.
+
+### Dependency Management
+
+Installed and documented the third-party `requests` library.
+
+Updated `requirements.txt`:
+
+```text
+requests==2.34.2
+```
+
+Verified installed dependency compatibility:
+
+```powershell
+python -m pip check
+```
+
+Result:
+
+```text
+No broken requirements found.
+```
+
+### Verification Results
+
+- API-specific tests: **8 passed**
+- Complete project suite: **54 passed**
+- Test failures: **0**
+- Real API GET request: **Successful**
+
+### Key Learning Outcomes
+
+- Integrating external REST APIs into Python applications.
+- Using HTTP response status checks and request timeouts.
+- Validating external data before application use.
+- Handling predictable network and HTTP failures.
+- Testing API clients without relying on live services.
+- Managing external dependencies.
+- Maintaining existing functionality through regression testing.
+
+### Development Workflow
+
+Learn → Build → Break → Debug → Improve → Document → Ship → Review → Share
+
+**Completed:** Theory, implementation, error handling, validation, automated testing, dependency verification, and README documentation.
+
+**Pending:** Final learning notes verification, GitHub commit, push, and review.

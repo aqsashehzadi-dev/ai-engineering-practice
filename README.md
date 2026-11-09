@@ -203,7 +203,7 @@ Run the complete automated test suite:
 python -m unittest discover -s tests -v
 ```
 
-**Latest verified result:** 46 tests passed, 0 failures.
+**Latest verified result:** 54 tests passed, 0 failures.
 
 ### Engineering Concepts Practiced
 
@@ -216,6 +216,65 @@ python -m unittest discover -s tests -v
 - Unit and integration testing
 - Failure simulation using `unittest.mock`
 - Modular Python application design
+- REST API integration using Python requests
+- HTTP GET requests and JSON response handling
+- HTTP status code validation
+- API timeouts and network error handling
+- API response data validation
+- Mocking external HTTP requests for unit testing
+
+### REST API Integration
+
+The project includes a REST API client implemented using Python's `requests` library.
+
+**Implementation:** `src/api_client.py`
+
+**API endpoint:** `https://jsonplaceholder.typicode.com/users/{user_id}`
+
+#### Features
+
+- Fetch user information using HTTP GET requests.
+- Parse JSON responses into Python dictionaries.
+- Validate required user fields (`name` and `email`).
+- Handle HTTP errors, connection failures, and request timeouts.
+- Apply request timeouts to prevent indefinite waiting.
+- Separate API communication from response validation.
+
+#### Running the API Client
+
+Install the project dependencies:
+
+```powershell
+python -m pip install -r requirements.txt
+```
+
+Run the API client from the project root:
+
+```powershell
+python -m src.api_client
+```
+
+Example output:
+
+```text
+Name: Leanne Graham
+Email: Sincere@april.biz
+```
+
+The example uses the public JSONPlaceholder testing API and requires an internet connection.
+
+#### API Unit Testing
+
+**Test module:** `tests/test_api_client.py`
+
+The API client includes eight automated tests covering successful requests, HTTP errors, connection errors, timeouts, successful data validation, missing required fields, invalid field types, and empty email values.
+
+External HTTP requests are mocked using `unittest.mock`, allowing the API tests to run without making real network requests.
+
+**Verified results:**
+- API-specific tests: 8 passed
+- Complete project test suite: 54 passed
+- Failures: 0
 
 ### Development Methodology
 
