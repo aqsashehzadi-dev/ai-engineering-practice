@@ -279,3 +279,49 @@ External HTTP requests are mocked using `unittest.mock`, allowing the API tests 
 ### Development Methodology
 
 Learn → Build → Break → Debug → Improve → Document → Ship → Review → Share
+
+## Asynchronous API Client
+
+The project includes an asynchronous API client built with Python's `asyncio` and `httpx`.
+
+### Features
+
+- Asynchronous HTTP requests using `httpx.AsyncClient`
+- Concurrent API calls using `asyncio.gather()`
+- Shared HTTP client for connection reuse
+- Concurrency control with `asyncio.Semaphore`
+- HTTP error and timeout handling
+- Reusable API response validation
+- Automated asynchronous unit tests
+
+### Run the Async API Client
+
+From the project root:
+
+```powershell
+python -m src.async_api_client
+```
+
+The application fetches and displays information for three users from JSONPlaceholder.
+
+### Run the Tests
+
+```powershell
+python -m unittest discover -s tests -v
+```
+
+**Verified test baseline:** 60 passing unit tests, including 6 asynchronous tests.
+
+### Dependencies
+
+Install the project dependencies:
+
+```powershell
+python -m pip install -r requirements.txt
+```
+
+The asynchronous API client uses `httpx==0.28.1`.
+
+### Testing Approach
+
+Asynchronous tests use `unittest.IsolatedAsyncioTestCase`, `AsyncMock`, and simulated HTTP responses to verify success, validation failures, HTTP errors, timeouts, task cancellation, and concurrency limits without requiring live network access.

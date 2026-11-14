@@ -4642,3 +4642,34 @@ Learn → Build → Break → Debug → Improve → Document → Ship → Review
 **Completed:** Theory, implementation, error handling, validation, automated testing, dependency verification, and README documentation.
 
 **Pending:** Final learning notes verification, GitHub commit, push, and review.
+
+## Phase 1 — Topic 1.9: Async Programming
+
+### Concepts Learned
+- Synchronous vs asynchronous execution
+- Coroutines, `async def`, `await`, and the event loop
+- Concurrent execution with `asyncio.gather()` and `asyncio.create_task()`
+- Async exception handling, task cancellation, and timeouts
+- Asyncio vs threading vs multiprocessing
+- Concurrency control using `asyncio.Semaphore`
+
+### Practical Implementation
+- Created `src/async_api_client.py` using `httpx.AsyncClient`.
+- Implemented asynchronous HTTP requests and reused existing `validate_user()` logic.
+- Used a shared HTTP client for connection reuse.
+- Implemented concurrent user requests with `asyncio.gather()`.
+- Limited simultaneous HTTP requests using `asyncio.Semaphore(2)`.
+- Added automated async unit tests using `unittest.IsolatedAsyncioTestCase` and `AsyncMock`.
+
+### Testing and Verification
+- Added six async tests covering successful requests, invalid data, HTTP errors, timeouts, cancellation, and concurrency limits.
+- Verified all 60 project unit tests pass.
+- Confirmed installed dependencies with `python -m pip check`.
+
+### Engineering Takeaways
+- Asynchronous programming is useful for overlapping I/O-bound operations.
+- Calling blocking functions inside async code can block the event loop.
+- A shared HTTP client can improve connection reuse and resource management.
+- Semaphores limit concurrency but do not automatically enforce rate limits.
+- Mock-based tests verify behavior without requiring live network access.
+- Cancellation and exceptions should be handled deliberately.
